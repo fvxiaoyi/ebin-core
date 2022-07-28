@@ -17,9 +17,32 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.0</spring-cloud.version>
-        <checkstyle.path>checkstyle.xml</checkstyle.path>
-        <checkstyle.expansion.path>../</checkstyle.expansion.path>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>parent</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/checkstyle.xml</exists>
+                </file>
+            </activation>
+            <properties>
+                <checkstyle.path>${basedir}</checkstyle.path>
+            </properties>
+        </profile>
+        <profile>
+            <id>module</id>
+            <activation>
+                <file>
+                    <exists>../checkstyle.xml</exists>
+                </file>
+            </activation>
+            <properties>
+                <checkstyle.path>../</checkstyle.path>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -53,6 +76,23 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
+                <version>0.1</version>
+                <executions>
+                    <execution>
+                        <id>directories</id>
+                        <goals>
+                            <goal>highest-basedir</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <property>main.basedir</property>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.2</version>
@@ -64,12 +104,12 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configLocation>${checkstyle.path}</configLocation>
+                    <configLocation>checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
-                    <propertyExpansion>config_loc=${checkstyle.expansion.path}</propertyExpansion>
+                    <propertyExpansion>config_loc=${main.basedir}</propertyExpansion>
                 </configuration>
                 <executions>
                     <execution>
