@@ -19,31 +19,6 @@
         <spring-cloud.version>2021.0.0</spring-cloud.version>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>parent</id>
-            <activation>
-                <file>
-                    <exists>${basedir}/checkstyle.xml</exists>
-                </file>
-            </activation>
-            <properties>
-                <checkstyle.path>${basedir}</checkstyle.path>
-            </properties>
-        </profile>
-        <profile>
-            <id>module</id>
-            <activation>
-                <file>
-                    <exists>../checkstyle.xml</exists>
-                </file>
-            </activation>
-            <properties>
-                <checkstyle.path>../</checkstyle.path>
-            </properties>
-        </profile>
-    </profiles>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
