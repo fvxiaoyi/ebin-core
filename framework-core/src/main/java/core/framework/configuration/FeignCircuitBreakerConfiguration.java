@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @author ebin
  */
 @Configuration
-public class CircuitBreakerConfig {
+public class FeignCircuitBreakerConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(CircuitBreakerFactory.class)
