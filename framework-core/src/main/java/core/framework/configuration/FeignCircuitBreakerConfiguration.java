@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * feign.circuitbreaker.enabled=true
  *
  * @author ebin
+ * @see org.springframework.cloud.openfeign.FeignCircuitBreakerInvocationHandler
  */
 @Configuration
 public class FeignCircuitBreakerConfiguration {
