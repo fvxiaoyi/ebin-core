@@ -9,12 +9,7 @@ import java.util.function.Supplier;
 /**
  * @author ebin
  */
-public class ServiceUnavailableCircuitBreaker implements CircuitBreaker {
-    public final String id;
-
-    public ServiceUnavailableCircuitBreaker(String id) {
-        this.id = id;
-    }
+public record ServiceUnavailableCircuitBreaker(String id) implements CircuitBreaker {
 
     @Override
     public <T> T run(Supplier<T> toRun, Function<Throwable, T> fallback) {
