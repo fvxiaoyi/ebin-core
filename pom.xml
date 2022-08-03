@@ -11,5 +11,6 @@
     <modules>
         <module>framework-parent</module>
         <module>framework-core</module>
+        <module>project-template</module>
     </modules>
 </project>

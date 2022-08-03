@@ -18,6 +18,8 @@ import java.util.function.Supplier;
 public class MySQLQueryInterceptor implements QueryInterceptor {
     // mysql will create new interceptor instance for every connection, so to minimize initialization cost
     private static final Logger LOGGER = LoggerFactory.getLogger(MySQLQueryInterceptor.class);
+    // flyway
+    private static final String IGNORE_SQL = "SELECT variable_name FROM performance_schema.user_variables_by_thread WHERE variable_value IS NOT NULL";
 
     @Override
     public QueryInterceptor init(MysqlConnection connection, Properties properties, Log log) {
@@ -45,7 +47,9 @@ public class MySQLQueryInterceptor implements QueryInterceptor {
         if (noIndexUsed || badIndexUsed) {
             String message = noIndexUsed ? "no index used" : "bad index used";
             String sqlValue = sql.get();
-            LOGGER.warn("{}, sql={}", message, sqlValue);
+            if (!IGNORE_SQL.equals(sqlValue)) {
+                LOGGER.warn("{}, sql={}", message, sqlValue);
+            }
         }
         return null;
     }

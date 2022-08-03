@@ -1,0 +1,20 @@
+server:
+  port: 8080
+spring:
+  main:
+    banner-mode: "off"
+  datasource:
+    url: jdbc:mysql://192.168.137.1:3306/demo?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    showSql: false
+    openInView: false
+    database: MYSQL
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+sql-query:
+  mapper-locations:
+    - apps/bff/example/query/ExampleQuery.xml

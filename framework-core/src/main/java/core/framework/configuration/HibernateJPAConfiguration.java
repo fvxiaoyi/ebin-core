@@ -1,10 +1,12 @@
 package core.framework.configuration;
 
+import core.framework.domain.NameQueryRegistrator;
 import core.framework.domain.event.DomainEventRegistrationListener;
 import core.framework.domain.event.HibernatePostCommitEventListener;
 import core.framework.domain.event.HibernatePreCommitEventListener;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.event.spi.EventType;
+import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilderCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,11 @@ public class HibernateJPAConfiguration {
     private static final String EVENT_LISTENER_GROUP_NAME_TPL = "%s.%s";
     private static final int STATEMENT_FETCH_SIZE = 64;
     private static final int DOMAIN_EVENT_TASK_EXECUTOR_AWAIT_TERMINATION_SECONDS = 60 * 2;
+
+    @Bean
+    public EntityManagerFactoryBuilderCustomizer nameQueryRegistratorCustomizer() {
+        return builder -> builder.setPersistenceUnitPostProcessors(new NameQueryRegistrator());
+    }
 
     @Bean
     public HibernatePropertiesCustomizer hibernatePropertiesCustomizer() {
