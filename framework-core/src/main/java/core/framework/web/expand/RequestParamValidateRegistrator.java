@@ -17,6 +17,7 @@ import java.util.Objects;
  * @author ebin
  */
 public class RequestParamValidateRegistrator implements ApplicationListener<ContextRefreshedEvent> {
+    private static final String VALID_PRE = "javax.validation";
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -34,6 +35,20 @@ public class RequestParamValidateRegistrator implements ApplicationListener<Cont
             }
             MethodParameter[] methodParameters = handlerMethod.getMethodParameters();
             handleMethodParameters(methodParameters, resolver);
+            handleMethodReturnType(handlerMethod.getMethod().getReturnType(), resolver);
+        }
+    }
+
+    private void handleMethodReturnType(Class<?> returnType, AnnotationLessHandlerMethodArgumentResolver resolver) {
+        Field[] declaredFields = returnType.getDeclaredFields();
+        for (Field field : declaredFields) {
+            Annotation[] annotations = field.getAnnotations();
+            for (Annotation ann : annotations) {
+                if (ann.annotationType().getName().startsWith(VALID_PRE)) {
+                    resolver.addValidateRequestParamNames(returnType.getName());
+                    return;
+                }
+            }
         }
     }
 
@@ -50,7 +65,7 @@ public class RequestParamValidateRegistrator implements ApplicationListener<Cont
         for (Field field : declaredFields) {
             Annotation[] annotations = field.getAnnotations();
             for (Annotation ann : annotations) {
-                if (ann.annotationType().getName().startsWith("javax.validation")) {
+                if (ann.annotationType().getName().startsWith(VALID_PRE)) {
                     resolver.addValidateRequestParamNames(methodParameter.getParameterType().getName());
                     return true;
                 }

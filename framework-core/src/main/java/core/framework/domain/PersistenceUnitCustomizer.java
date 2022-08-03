@@ -1,5 +1,6 @@
 package core.framework.domain;
 
+import core.framework.domain.impl.DomainEventTracking;
 import core.framework.utils.ResourcePatternResolverUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +14,8 @@ import java.util.List;
 /**
  * @author ebin
  */
-public class NameQueryRegistrator implements PersistenceUnitPostProcessor {
-    private final Logger logger = LoggerFactory.getLogger(NameQueryRegistrator.class);
+public class PersistenceUnitCustomizer implements PersistenceUnitPostProcessor {
+    private final Logger logger = LoggerFactory.getLogger(PersistenceUnitCustomizer.class);
 
     @Override
     public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo pui) {
@@ -30,5 +31,7 @@ public class NameQueryRegistrator implements PersistenceUnitPostProcessor {
                 //ignore
             }
         });
+
+        pui.addManagedClassName(DomainEventTracking.class.getName());
     }
 }

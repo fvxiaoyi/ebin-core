@@ -26,7 +26,7 @@ public abstract class AbstractAggregateRoot<A extends AggregateRoot<A>> extends 
     private final ZonedDateTime createdTime = ZonedDateTime.now();
 
     @Override
-    public Object getId() {
+    public Long getId() {
         return id;
     }
 
