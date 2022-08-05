@@ -1,6 +1,4 @@
-package core.framework.domain.exception;
-
-import core.framework.base.BaseRuntimeException;
+package core.framework.exception;
 
 /**
  * @author ebin

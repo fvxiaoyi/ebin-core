@@ -1,6 +1,6 @@
 package apps.example.domain.exception;
 
-import core.framework.domain.exception.AbstractDomainException;
+import core.framework.exception.AbstractDomainException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

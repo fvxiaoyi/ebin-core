@@ -10,6 +10,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -37,10 +38,10 @@ public class JPAQueryService extends AbstractSqlQueryService {
         return query.getResultList();
     }
 
-    protected <T> T executeGetQuery(String sql, Class<T> beanClass, Map<String, Object> param) {
+    protected <T> Optional<T> executeGetQuery(String sql, Class<T> beanClass, Map<String, Object> param) {
         Query query = this.createQuery(sql, beanClass, param);
         query.setHint(QueryHints.HINT_FETCH_SIZE, 1);
-        return (T) query.getResultList().stream().findFirst().orElse(null);
+        return query.getResultList().stream().findFirst();
     }
 
     private <T> Query createQuery(String sql, Class<T> beanType, Map<String, Object> param) {

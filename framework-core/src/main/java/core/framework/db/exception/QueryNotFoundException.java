@@ -1,6 +1,6 @@
 package core.framework.db.exception;
 
-import core.framework.base.BaseRuntimeException;
+import core.framework.exception.BaseRuntimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

@@ -1,4 +1,4 @@
-package core.framework.base;
+package core.framework.exception;
 
 /**
  * @author ebin

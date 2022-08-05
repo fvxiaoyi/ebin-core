@@ -1,6 +1,6 @@
 package core.framework.web.exception;
 
-import core.framework.base.BaseRuntimeException;
+import core.framework.exception.BaseRuntimeException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class AbstractSqlQueryService implements QueryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSqlQueryService.class);
@@ -28,12 +29,12 @@ public abstract class AbstractSqlQueryService implements QueryService {
         String totalSql = queryParser.parseTotalQueryString(sql);
         LOGGER.info(totalSql);
         List<T> data = executePagingQuery(sql, command.getResultType(), command.getQueryParam(), start, limit);
-        TotalQueryResult total = executeGetQuery(totalSql, TotalQueryResult.class, command.getQueryParam());
+        TotalQueryResult total = executeGetQuery(totalSql, TotalQueryResult.class, command.getQueryParam()).orElse(TotalQueryResult.EMPTY);
         return new PagingResult<T>(total.getTotal().longValue(), data);
     }
 
     @Override
-    public <T> T get(QueryCommand<T> command) {
+    public <T> Optional<T> get(QueryCommand<T> command) {
         String sql = getSql(command.getQueryName(), command.getQueryParam());
         LOGGER.info(sql);
         return executeGetQuery(sql, command.getResultType(), command.getQueryParam());
@@ -47,5 +48,5 @@ public abstract class AbstractSqlQueryService implements QueryService {
 
     protected abstract <T> List<T> executePagingQuery(String sql, Class<T> beanClass, Map<String, Object> param, Integer start, Integer limit);
 
-    protected abstract <T> T executeGetQuery(String sql, Class<T> beanClass, Map<String, Object> param);
+    protected abstract <T> Optional<T> executeGetQuery(String sql, Class<T> beanClass, Map<String, Object> param);
 }
