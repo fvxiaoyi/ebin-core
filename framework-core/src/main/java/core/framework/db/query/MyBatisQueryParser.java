@@ -1,20 +1,21 @@
 package core.framework.db.query;
 
 import core.framework.db.exception.QueryNotFoundException;
+import core.framework.utils.ResourcePatternResolverUtil;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
 
-public class MyBatisQueryParser implements InitializingBean, QueryParser {
-    private final SqlQueryServiceProperties properties;
-    private Configuration configuration;
+import java.util.List;
 
-    public MyBatisQueryParser(SqlQueryServiceProperties properties) {
-        this.properties = properties;
-    }
+public class MyBatisQueryParser implements InitializingBean, QueryParser {
+    private final Logger logger = LoggerFactory.getLogger(MyBatisQueryParser.class);
+    private Configuration configuration;
 
     @Override
     public String getQueryString(String queryName, Object params) {
@@ -46,16 +47,17 @@ public class MyBatisQueryParser implements InitializingBean, QueryParser {
     @Override
     public void afterPropertiesSet() {
         this.configuration = new Configuration();
-        Resource[] mapperLocations = resolveMapperLocations(this.properties.getMapperLocations());
-        for (Resource mapperLocation : mapperLocations) {
-            if (mapperLocation == null)
+        List<Resource> resources = ResourcePatternResolverUtil.resolve("**/*Query.xml");
+        for (Resource resource : resources) {
+            if (resource == null)
                 continue;
             try {
-                XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(), this.configuration,
-                        mapperLocation.toString(), this.configuration.getSqlFragments());
+                XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(resource.getInputStream(), this.configuration,
+                        resource.toString(), this.configuration.getSqlFragments());
                 xmlMapperBuilder.parse();
+                logger.info("Add query file. Filename = " + resource.getFilename());
             } catch (Exception e) {
-                throw new RuntimeException("Failed to parse mapping resource: '" + mapperLocation + "'");
+                throw new RuntimeException("Failed to parse mapping resource: '" + resource + "'");
             }
         }
     }

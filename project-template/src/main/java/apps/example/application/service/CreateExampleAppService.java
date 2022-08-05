@@ -1,7 +1,7 @@
-package apps.example.application;
+package apps.example.application.service;
 
-import apps.bff.example.controller.request.CreateExampleRequest;
-import apps.bff.example.controller.response.CreateExampleResponse;
+import apps.example.interfaces.controller.request.CreateExampleRequest;
+import apps.example.interfaces.controller.response.CreateExampleResponse;
 import apps.example.domain.Example;
 import apps.example.domain.service.CreateExampleService;
 import org.springframework.beans.factory.annotation.Autowired;

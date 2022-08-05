@@ -4,9 +4,7 @@ import core.framework.db.query.JPAQueryService;
 import core.framework.db.query.MyBatisQueryParser;
 import core.framework.db.query.QueryParser;
 import core.framework.db.query.QueryService;
-import core.framework.db.query.SqlQueryServiceProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +16,6 @@ import javax.validation.Validator;
  * @author ebin
  */
 @Configuration
-@EnableConfigurationProperties({SqlQueryServiceProperties.class})
 public class QueryServiceConfiguration {
     @PersistenceContext
     private EntityManager entityManager;
@@ -29,7 +26,7 @@ public class QueryServiceConfiguration {
     }
 
     @Bean
-    public QueryParser queryParser(@Autowired SqlQueryServiceProperties sqlQueryServiceProperties) {
-        return new MyBatisQueryParser(sqlQueryServiceProperties);
+    public QueryParser queryParser() {
+        return new MyBatisQueryParser();
     }
 }

@@ -9,12 +9,12 @@ spring:
     password: root
     type: com.zaxxer.hikari.HikariDataSource
   jpa:
-    showSql: false
+    showSql: true
     openInView: false
     database: MYSQL
   flyway:
     enabled: true
     baselineOnMigrate: true
-sql-query:
-  mapper-locations:
-    - apps/bff/example/query/ExampleQuery.xml
+#sql-query:
+#  mapper-locations:
+#    - apps/bff/example/query/ExampleQuery.xml

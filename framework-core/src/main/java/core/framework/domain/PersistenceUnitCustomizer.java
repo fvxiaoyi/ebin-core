@@ -25,7 +25,7 @@ public class PersistenceUnitCustomizer implements PersistenceUnitPostProcessor {
                 String url = resource.getURL().toString();
                 //todo
                 url = url.substring(url.indexOf("apps"));
-                logger.info("add mapping filename=" + url);
+                logger.info("Add mapping file. Filename = " + url);
                 pui.addMappingFileName(url);
             } catch (IOException e) {
                 //ignore

@@ -1,4 +1,4 @@
-package apps.bff.example.controller.response;
+package apps.example.interfaces.controller.response;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

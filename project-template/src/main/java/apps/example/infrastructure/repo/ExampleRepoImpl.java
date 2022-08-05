@@ -1,4 +1,4 @@
-package apps.example.infrastructure;
+package apps.example.infrastructure.repo;
 
 import apps.example.domain.Example;
 import apps.example.domain.service.ExampleRepo;

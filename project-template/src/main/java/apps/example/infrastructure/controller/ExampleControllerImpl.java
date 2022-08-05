@@ -1,28 +1,26 @@
-package apps.bff.example.controller;
+package apps.example.infrastructure.controller;
 
-import apps.bff.example.controller.request.CreateExampleRequest;
-import apps.bff.example.controller.response.CreateExampleResponse;
-import apps.example.application.CreateExampleAppService;
+import apps.example.application.service.CreateExampleAppService;
+import apps.example.interfaces.controller.ExampleController;
+import apps.example.interfaces.controller.request.CreateExampleRequest;
+import apps.example.interfaces.controller.response.CreateExampleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author ebin
  */
 @RestController
-@RequestMapping("/example")
-public class ExampleController {
+public class ExampleControllerImpl implements ExampleController {
     @Autowired
     CreateExampleAppService createExampleAppService;
 
-    @PostMapping("/create")
+    @Override
     public CreateExampleResponse create(CreateExampleRequest request) {
         return createExampleAppService.create(request);
     }
 
-    @PostMapping("/create/v2")
+    @Override
     public void createV2(CreateExampleRequest request) {
         createExampleAppService.create(request);
     }

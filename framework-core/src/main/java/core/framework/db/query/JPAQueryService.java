@@ -45,9 +45,7 @@ public class JPAQueryService extends AbstractSqlQueryService {
 
     private <T> Query createQuery(String sql, Class<T> beanType, Map<String, Object> param) {
         Query query = entityManager.createNativeQuery(sql).setHint(QueryHints.HINT_READONLY, true);
-        query.getParameters().forEach(p -> {
-            query.setParameter(p.getName(), param.get(p.getName()));
-        });
+        param.forEach(query::setParameter);
         org.hibernate.query.Query<?> unwrapQuery = query.unwrap(org.hibernate.query.Query.class);
         unwrapQuery.setResultTransformer(getTransformer(beanType));
         return query;

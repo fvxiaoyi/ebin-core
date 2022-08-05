@@ -1,5 +1,6 @@
 package core.framework.utils.json;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -24,6 +25,7 @@ public final class JSONMapper {
                 .visibility(new VisibilityChecker.Std(ANY, ANY, ANY, ANY, ANY))
                 .enable(MapperFeature.PROPAGATE_TRANSIENT_MARKER)
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .deactivateDefaultTyping()
                 .build();
     }
