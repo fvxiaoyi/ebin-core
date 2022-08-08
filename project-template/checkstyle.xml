@@ -7,6 +7,14 @@
     <module name="BeforeExecutionExclusionFileFilter">
         <property name="fileNamePattern" value=".*Application.java$"/>
     </module>
+    <module name="SuppressionSingleFilter">
+        <property name="checks" value="VisibilityModifier"/>
+        <property name="files" value="^.*[\\/]src[\\/]main[\\/].*[\\/]interfaces[\\/].*[\\/](request|response)[\\/].*"/>
+    </module>
+    <module name="SuppressionSingleFilter">
+        <property name="checks" value="VisibilityModifier"/>
+        <property name="files" value="^.*[\\/]src[\\/]main[\\/].*[\\/]application[\\/]service[\\/].*dto[\\/].*"/>
+    </module>
 
     <module name="TreeWalker">
         <!--Annotations:-->
@@ -80,14 +88,21 @@
         <module name="AvoidStarImport"/>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
-        <!-- infrastructure -> application -> domain -->
+        <!-- interface -> infrastructure -> application -> domain -->
         <module name="ImportControl">
             <property name="file" value="${config_loc}/checkstyle-domain-import-control.xml"/>
             <property name="path" value="^.*[\\/]src[\\/]main[\\/].*[\\/]domain\.?"/>
+            <message key="import.control.disallowed" value="不允许的导入：{0}。领域层（domain）不可依赖基础设施层（infrastructure）、用户接口层（interfaces）、应用层（application）。"/>
         </module>
         <module name="ImportControl">
             <property name="file" value="${config_loc}/checkstyle-application-import-control.xml"/>
             <property name="path" value="^.*[\\/]src[\\/]main[\\/].*[\\/]application\.?"/>
+            <message key="import.control.disallowed" value="不允许的导入：{0}。应用层（application）不可依赖基础设施层（infrastructure）、用户接口层（interfaces）。"/>
+        </module>
+        <module name="ImportControl">
+            <property name="file" value="${config_loc}/checkstyle-interface-import-control.xml"/>
+            <property name="path" value="^.*[\\/]src[\\/]main[\\/].*[\\/]interfaces\.?"/>
+            <message key="import.control.disallowed" value="不允许的导入：{0}。用户接口层（domain）不可依赖基础设施层（infrastructure）。"/>
         </module>
 
         <!--Javadoc-->

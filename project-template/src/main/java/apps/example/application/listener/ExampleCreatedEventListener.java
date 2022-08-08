@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class ExampleCreatedEventListener implements DomainPostEventListener<ExampleCreatedEvent> {
     @Autowired
-    ExampleCreatedPublisher publishExampleCreatedEvent;
+    private ExampleCreatedPublisher publishExampleCreatedEvent;
 
     @Override
     public void onEvent(ExampleCreatedEvent event) {

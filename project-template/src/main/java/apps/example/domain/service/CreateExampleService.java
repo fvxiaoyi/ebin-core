@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class CreateExampleService {
     @Autowired
-    ExampleRepo exampleRepo;
+    private ExampleRepo exampleRepo;
 
     public Example create(String name) {
         List<Example> examples = exampleRepo.selectByName(name);

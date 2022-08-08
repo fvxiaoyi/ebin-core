@@ -1,7 +1,7 @@
 package apps.example.application.service;
 
+import apps.example.application.service.dto.ExampleDTO;
 import apps.example.application.service.exception.ExampleNotFoundException;
-import apps.example.interfaces.service.response.GetExampleResponse;
 import core.framework.db.query.JPAQueryCommand;
 import core.framework.db.query.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetExampleAppService {
     @Autowired
-    QueryService queryService;
+    private QueryService queryService;
 
-    public GetExampleResponse getExample(String id) {
-        JPAQueryCommand<GetExampleResponse.Example> command = new JPAQueryCommand<>("example.get", GetExampleResponse.Example.class);
+    public ExampleDTO getExample(String id) {
+        JPAQueryCommand<ExampleDTO> command = new JPAQueryCommand<>("example.get", ExampleDTO.class);
         command.addQueryParam("id", id);
-        GetExampleResponse.Example example = queryService.get(command).orElseThrow(() -> new ExampleNotFoundException(id));
-        GetExampleResponse response = new GetExampleResponse();
-        response.example = example;
-        return response;
+        return queryService.get(command).orElseThrow(() -> new ExampleNotFoundException(id));
     }
 }
