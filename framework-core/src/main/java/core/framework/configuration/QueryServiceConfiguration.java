@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.validation.Validator;
 
 /**
  * @author ebin
@@ -21,8 +20,8 @@ public class QueryServiceConfiguration {
     private EntityManager entityManager;
 
     @Bean
-    public QueryService jpaSqlQueryService(@Autowired QueryParser queryParser, @Autowired Validator validator) {
-        return new JPAQueryService(entityManager, queryParser, validator);
+    public QueryService jpaSqlQueryService(@Autowired QueryParser queryParser) {
+        return new JPAQueryService(entityManager, queryParser);
     }
 
     @Bean

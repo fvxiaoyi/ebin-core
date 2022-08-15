@@ -1,4 +1,4 @@
-package core.framework.web.expand;
+package core.framework.validate;
 
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.context.ApplicationContext;
@@ -11,22 +11,21 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Objects;
 
 /**
  * @author ebin
  */
-public class RequestParamValidateRegistrator implements ApplicationListener<ContextRefreshedEvent> {
+public class BeanValidateRegistrator implements ApplicationListener<ContextRefreshedEvent> {
     private static final String VALID_PRE = "javax.validation";
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         ApplicationContext applicationContext = event.getApplicationContext();
-        AnnotationLessRequestMappingHandlerAdapter annotationLessRequestMappingHandlerAdapter = applicationContext.getBean(AnnotationLessRequestMappingHandlerAdapter.class);
-        AnnotationLessHandlerMethodArgumentResolver resolver = annotationLessRequestMappingHandlerAdapter.getAnnotationLessHandlerMethodArgumentResolver();
-        if (Objects.isNull(resolver)) {
-            return;
-        }
+        processController(applicationContext);
+
+    }
+
+    private void processController(ApplicationContext applicationContext) {
         RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
         Collection<HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods().values();
         for (HandlerMethod handlerMethod : handlerMethods) {
@@ -34,39 +33,39 @@ public class RequestParamValidateRegistrator implements ApplicationListener<Cont
                 continue;
             }
             MethodParameter[] methodParameters = handlerMethod.getMethodParameters();
-            handleMethodParameters(methodParameters, resolver);
-            handleMethodReturnType(handlerMethod.getMethod().getReturnType(), resolver);
+            handleMethodParameters(methodParameters);
+            handleMethodReturnType(handlerMethod.getMethod().getReturnType());
         }
     }
 
-    private void handleMethodReturnType(Class<?> returnType, AnnotationLessHandlerMethodArgumentResolver resolver) {
+    private void handleMethodReturnType(Class<?> returnType) {
         Field[] declaredFields = returnType.getDeclaredFields();
         for (Field field : declaredFields) {
             Annotation[] annotations = field.getAnnotations();
             for (Annotation ann : annotations) {
                 if (ann.annotationType().getName().startsWith(VALID_PRE)) {
-                    resolver.addValidateRequestParamNames(returnType.getName());
+                    BeanValidatorManager.addValidator(returnType);
                     return;
                 }
             }
         }
     }
 
-    private void handleMethodParameters(MethodParameter[] methodParameters, AnnotationLessHandlerMethodArgumentResolver resolver) {
+    private void handleMethodParameters(MethodParameter[] methodParameters) {
         for (MethodParameter methodParameter : methodParameters) {
-            if (handleMethodParameter(methodParameter, resolver)) {
+            if (handleMethodParameter(methodParameter)) {
                 return;
             }
         }
     }
 
-    private boolean handleMethodParameter(MethodParameter methodParameter, AnnotationLessHandlerMethodArgumentResolver resolver) {
+    private boolean handleMethodParameter(MethodParameter methodParameter) {
         Field[] declaredFields = methodParameter.getParameterType().getDeclaredFields();
         for (Field field : declaredFields) {
             Annotation[] annotations = field.getAnnotations();
             for (Annotation ann : annotations) {
                 if (ann.annotationType().getName().startsWith(VALID_PRE)) {
-                    resolver.addValidateRequestParamNames(methodParameter.getParameterType().getName());
+                    BeanValidatorManager.addValidator(methodParameter.getParameterType());
                     return true;
                 }
             }

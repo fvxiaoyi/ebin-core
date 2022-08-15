@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author ebin
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class AbstractNotFoundApplicationException extends AbstractApplicationException {
+public abstract class AbstractNotFoundApplicationException extends AbstractApplicationException {
     public AbstractNotFoundApplicationException(String message) {
         super(message, HttpStatus.NOT_FOUND.toString());
     }

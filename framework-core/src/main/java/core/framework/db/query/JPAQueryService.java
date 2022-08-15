@@ -5,9 +5,6 @@ import org.hibernate.transform.ResultTransformer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.validation.Validator;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,13 +15,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class JPAQueryService extends AbstractSqlQueryService {
     private final EntityManager entityManager;
-    private final Validator validator;
     private final Map<Class<?>, ResultTransformer> resultBeanTransformers = new ConcurrentHashMap<>();
 
-    public JPAQueryService(EntityManager entityManager, QueryParser queryParser, Validator validator) {
+    public JPAQueryService(EntityManager entityManager, QueryParser queryParser) {
         super(queryParser);
         this.entityManager = entityManager;
-        this.validator = validator;
     }
 
     protected <T> List<T> executeSelectQuery(String sql, Class<T> beanClass, Map<String, Object> param) {
@@ -53,19 +48,6 @@ public class JPAQueryService extends AbstractSqlQueryService {
     }
 
     private <T> ResultTransformer getTransformer(Class<T> beanType) {
-        return resultBeanTransformers.computeIfAbsent(beanType, k -> {
-            boolean valid = false;
-            Field[] declaredFields = beanType.getDeclaredFields();
-            for (Field field : declaredFields) {
-                Annotation[] annotations = field.getAnnotations();
-                for (Annotation ann : annotations) {
-                    if (ann.annotationType().getName().startsWith("javax.validation")) {
-                        valid = true;
-                        break;
-                    }
-                }
-            }
-            return new AliasToJSONBeanTransformer(beanType, valid ? validator : null);
-        });
+        return resultBeanTransformers.computeIfAbsent(beanType, k -> new AliasToJSONBeanTransformer(beanType));
     }
 }

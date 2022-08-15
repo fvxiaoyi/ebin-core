@@ -1,5 +1,6 @@
 package apps;
 
+import core.framework.configuration.BeanValidatorConfiguration;
 import core.framework.configuration.DataSourceConfiguration;
 import core.framework.configuration.DefaultWebMvcConfigurer;
 import core.framework.configuration.FeignCircuitBreakerConfiguration;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Import;
         FeignCircuitBreakerConfiguration.class,
         HibernateJPAConfiguration.class,
         QueryServiceConfiguration.class,
+        BeanValidatorConfiguration.class,
         WebMvcConfiguration.class})
 public class DemoApplication {
 
