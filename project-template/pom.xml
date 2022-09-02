@@ -63,12 +63,12 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configLocation>.mvn/check/checkstyle.xml</configLocation>
+                    <configLocation>${main.basedir}/.mvn/check/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
-                    <propertyExpansion>config_loc=.mvn/check/</propertyExpansion>
+                    <propertyExpansion>config_loc=${main.basedir}/.mvn/check/</propertyExpansion>
                 </configuration>
                 <executions>
                     <execution>
