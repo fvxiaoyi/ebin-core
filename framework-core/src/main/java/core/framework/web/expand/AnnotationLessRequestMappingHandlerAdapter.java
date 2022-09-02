@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
  * @author ebin
  */
 public class AnnotationLessRequestMappingHandlerAdapter extends RequestMappingHandlerAdapter {
-    private Validator validator;
+    private final Validator validator;
 
     public AnnotationLessRequestMappingHandlerAdapter(Validator validator) {
         this.validator = validator;
@@ -45,9 +45,5 @@ public class AnnotationLessRequestMappingHandlerAdapter extends RequestMappingHa
             customArgumentResolvers.add(resolver);
             setCustomArgumentResolvers(customArgumentResolvers);
         }
-    }
-
-    protected AnnotationLessHandlerMethodArgumentResolver getAnnotationLessHandlerMethodArgumentResolver() {
-        return (AnnotationLessHandlerMethodArgumentResolver) getCustomArgumentResolvers().stream().filter(f -> f instanceof AnnotationLessHandlerMethodArgumentResolver).findFirst().orElse(null);
     }
 }

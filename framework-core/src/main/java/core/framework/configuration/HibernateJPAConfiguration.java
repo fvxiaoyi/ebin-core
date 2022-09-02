@@ -31,6 +31,9 @@ public class HibernateJPAConfiguration {
     @Bean
     public HibernatePropertiesCustomizer hibernatePropertiesCustomizer() {
         return prop -> {
+            prop.put(hibernateEventListenerGroupName(EventType.PRE_INSERT), HibernatePreCommitEventListener.class.getTypeName());
+            prop.put(hibernateEventListenerGroupName(EventType.PRE_UPDATE), HibernatePreCommitEventListener.class.getTypeName());
+
             prop.put(hibernateEventListenerGroupName(EventType.POST_INSERT), HibernatePreCommitEventListener.class.getTypeName());
             prop.put(hibernateEventListenerGroupName(EventType.POST_UPDATE), HibernatePreCommitEventListener.class.getTypeName());
             prop.put(hibernateEventListenerGroupName(EventType.POST_DELETE), HibernatePreCommitEventListener.class.getTypeName());

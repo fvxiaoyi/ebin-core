@@ -21,7 +21,7 @@ public class CreateExampleService {
         if (!examples.isEmpty()) {
             throw new ExampleNameDupException();
         }
-        Example example = new Example(name);
+        Example example = new Example(null);
         example.registerEvent(new ExampleCreatedEvent(example));
         exampleRepo.persist(example);
         return example;

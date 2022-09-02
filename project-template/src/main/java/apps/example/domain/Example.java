@@ -4,6 +4,7 @@ import core.framework.domain.impl.AbstractAggregateRoot;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author ebin
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "example")
 public class Example extends AbstractAggregateRoot<Example> {
 
+    @NotNull
     private String name;
 
     private Example() {
