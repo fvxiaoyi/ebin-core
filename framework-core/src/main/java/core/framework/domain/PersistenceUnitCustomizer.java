@@ -2,6 +2,7 @@ package core.framework.domain;
 
 import core.framework.domain.impl.DomainEventTracking;
 import core.framework.utils.ResourcePatternResolverUtil;
+import core.framework.validate.BeanValidatorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -33,5 +34,13 @@ public class PersistenceUnitCustomizer implements PersistenceUnitPostProcessor {
         });
 
         pui.addManagedClassName(DomainEventTracking.class.getName());
+
+        pui.getManagedClassNames().forEach(className -> {
+            try {
+                BeanValidatorManager.addValidator(Class.forName(className));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

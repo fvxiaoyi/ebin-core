@@ -50,7 +50,6 @@ public class DomainEventTracking {
         }
     }
 
-
     public Long getId() {
         return this.id;
     }
@@ -61,5 +60,17 @@ public class DomainEventTracking {
 
     public <T> T getPayload(Class<T> instanceClass) {
         return JSON.fromJSON(instanceClass, this.payload);
+    }
+
+    public String getAggregateRootClass() {
+        return aggregateRootClass;
+    }
+
+    public Long getAggregateRootId() {
+        return aggregateRootId;
+    }
+
+    public String getPayload() {
+        return payload;
     }
 }
