@@ -94,7 +94,7 @@
                     <outputDirectory>${project.build.directory}</outputDirectory>
                     <branch>refs/heads/main</branch>
                     <includes>
-                        <include>**/*</include>
+                        <include>**/*.jar</include>
                     </includes>
                     <path>maven-repo</path>
                     <merge>true</merge>
