@@ -35,8 +35,8 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>local-jar-maven-repo</id>
-            <url>file://${project.basedir}/.mvn/plugin</url>
+            <id>github</id>
+            <url>https://raw.githubusercontent.com/fvxiaoyi/maven-repo/main</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -88,6 +88,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.2.2</version>
             </plugin>
             <plugin>
                 <groupId>core.framework</groupId>

@@ -36,7 +36,10 @@ public class DomainEventTracking {
 
     @NotNull
     @Column(name = "created_time")
-    private final ZonedDateTime createdTime;
+    private ZonedDateTime createdTime;
+
+    private DomainEventTracking() {
+    }
 
     public DomainEventTracking(AbstractDomainEvent<?> event) {
         this.aggregateRootClass = event.getSource().getClass().getTypeName();

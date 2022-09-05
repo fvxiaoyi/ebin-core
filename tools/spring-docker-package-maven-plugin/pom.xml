@@ -94,11 +94,10 @@
                     <outputDirectory>${project.build.directory}</outputDirectory>
                     <branch>refs/heads/main</branch>
                     <includes>
-                        <include>**/*.jar</include>
+                        <include>core/framework/**/*</include>
                     </includes>
-                    <path>maven-repo</path>
                     <merge>true</merge>
-                    <repositoryName>ebin-core</repositoryName>
+                    <repositoryName>maven-repo</repositoryName>
                     <repositoryOwner>fvxiaoyi</repositoryOwner>
                     <server>github</server>
                 </configuration>

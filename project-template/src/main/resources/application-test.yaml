@@ -1,0 +1,5 @@
+spring:
+  jpa:
+    showSql: true
+    openInView: false
+    database: H2
