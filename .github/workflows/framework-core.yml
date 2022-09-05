@@ -9,6 +9,8 @@ on:
       
 env:
   WORK_DIR: framework-core
+  GITHUB_ACTOR: fvxiaoyi
+  GITHUB_TOKEN: ${{ secrets.MAVEN_SERVER_TOKEN }}
 
 jobs:
   build:
@@ -22,19 +24,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: x
-      run: cat /home/runner/.m2/settings.xml
-    - uses: s4u/maven-settings-action@v2.6.0
-      with:
-        githubServer: false
-        servers: |
-          [{
-              "id": "github",
-              "username": "fvxiaoyi",
-              "password": "${{ secrets.MAVEN_SERVER_TOKEN }}"
-          }]
-    - name: x1
-      run: cat /home/runner/.m2/settings.xml
     - name: Build with Maven
       run: |
         cd ${{ env.WORK_DIR }}
