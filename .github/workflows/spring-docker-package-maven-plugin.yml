@@ -23,6 +23,7 @@ jobs:
         cache: maven
     - uses: s4u/maven-settings-action@v2.6.0
       with:
+        githubServer: false
         servers: |
           [{
               "id": "github",
