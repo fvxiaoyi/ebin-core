@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'framework-parent/**'
+      - '.github/workflows/framework-parent.yml'
       
 env:
   WORK_DIR: framework-parent
