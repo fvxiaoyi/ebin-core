@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'tools/spring-docker-package-maven-plugin/**'
+      - '.github/workflows/spring-docker-package-maven-plugin.yml'
       
 env:
   WORK_DIR: tools/spring-docker-package-maven-plugin

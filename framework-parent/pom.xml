@@ -39,6 +39,20 @@
         </repository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://raw.githubusercontent.com/fvxiaoyi/maven-repo/main</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>github</id>
+            <url>https://raw.githubusercontent.com/fvxiaoyi/maven-repo/main</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <resources>
             <resource>

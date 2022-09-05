@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'framework-core/**'
+      - '.github/workflows/framework-core.yml'
       
 env:
   WORK_DIR: framework-core
