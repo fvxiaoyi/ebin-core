@@ -5,5 +5,5 @@ todo:
 id gen
 
 rbac
- 
-open telemetry
+
+domain load validate?
