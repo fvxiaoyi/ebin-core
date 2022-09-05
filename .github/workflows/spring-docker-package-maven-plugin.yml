@@ -9,6 +9,8 @@ on:
       
 env:
   WORK_DIR: tools/spring-docker-package-maven-plugin
+  GITHUB_ACTOR: fvxiaoyi
+  GITHUB_TOKEN: ${{ secrets.MAVEN_SERVER_TOKEN }}
 
 jobs:
   build:
@@ -22,15 +24,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - uses: s4u/maven-settings-action@v2.6.0
-      with:
-        githubServer: false
-        servers: |
-          [{
-              "id": "github",
-              "username": "fvxiaoyi",
-              "password": "${{ secrets.MAVEN_SERVER_TOKEN }}"
-          }]
     - name: Build with Maven
       run: |
         cd ${{ env.WORK_DIR }}
