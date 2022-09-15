@@ -11,19 +11,18 @@ import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvide
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.trace.SdkTracerProviderBuilder;
 
-/**
- * @author ebin
- */
+/** @author ebin */
 @AutoService(AutoConfigurationCustomizerProvider.class)
-public class DefaultAutoConfigurationCustomizerProvider implements AutoConfigurationCustomizerProvider {
+public class DefaultAutoConfigurationCustomizerProvider
+    implements AutoConfigurationCustomizerProvider {
 
-    @Override
-    public void customize(AutoConfigurationCustomizer autoConfiguration) {
-        autoConfiguration.addTracerProviderCustomizer(this::configureSdkTracerProvider);
-    }
+  @Override
+  public void customize(AutoConfigurationCustomizer autoConfiguration) {
+    autoConfiguration.addTracerProviderCustomizer(this::configureSdkTracerProvider);
+  }
 
-    private SdkTracerProviderBuilder configureSdkTracerProvider(
-            SdkTracerProviderBuilder tracerProvider, ConfigProperties config) {
-        return tracerProvider.addSpanProcessor(new SpanAlertingProcessor());
-    }
+  private SdkTracerProviderBuilder configureSdkTracerProvider(
+      SdkTracerProviderBuilder tracerProvider, ConfigProperties config) {
+    return tracerProvider.addSpanProcessor(new SpanAlertingProcessor());
+  }
 }
