@@ -8,7 +8,7 @@ on:
       - '.github/workflows/framework-core-domain.yml'
       
 env:
-  WORK_DIR: framework-core
+  WORK_DIR: framework-core-domain
   GITHUB_ACTOR: fvxiaoyi
   GITHUB_TOKEN: ${{ secrets.MAVEN_SERVER_TOKEN }}
 
