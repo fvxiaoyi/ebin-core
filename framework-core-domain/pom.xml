@@ -7,7 +7,6 @@
         <groupId>core.framework</groupId>
         <artifactId>framework-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/>
     </parent>
     <groupId>com.framework</groupId>
     <artifactId>framework-core-domain</artifactId>
