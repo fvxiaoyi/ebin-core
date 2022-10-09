@@ -1,4 +1,4 @@
-name: framework-core
+name: framework-core-domain
 
 on:
   push:
