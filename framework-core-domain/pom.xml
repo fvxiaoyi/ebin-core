@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath/>
     </parent>
-    <groupId>com.framework</groupId>
+    <groupId>core.framework</groupId>
     <artifactId>framework-core-domain</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
