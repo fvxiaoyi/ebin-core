@@ -1,7 +1,7 @@
 package apps.example.domain.event;
 
 import apps.example.domain.Example;
-import core.framework.domain.impl.AbstractDomainEvent;
+import core.framework.jpa.impl.AbstractDomainEvent;
 
 /**
  * @author ebin

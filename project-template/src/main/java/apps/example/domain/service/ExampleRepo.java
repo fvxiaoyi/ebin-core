@@ -1,7 +1,7 @@
 package apps.example.domain.service;
 
 import apps.example.domain.Example;
-import core.framework.domain.Repository;
+import core.framework.jpa.Repository;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package apps.example.application.service.exception;
 
-import core.framework.exception.AbstractNotFoundApplicationException;
+import core.framework.json.AbstractNotFoundApplicationException;
 
 /**
  * @author ebin

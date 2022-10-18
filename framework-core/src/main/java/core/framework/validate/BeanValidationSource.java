@@ -5,39 +5,15 @@ import core.framework.validate.validation.NullableValidation;
 import core.framework.validate.validation.ValidationMethod;
 import core.framework.validate.validation.collection.CollectionValueEachValidation;
 import core.framework.validate.validation.collection.MapValueEachValidation;
-import core.framework.validate.validation.collection.NotEmptyValidationForCollection;
-import core.framework.validate.validation.collection.NotEmptyValidationForMap;
-import core.framework.validate.validation.collection.SizeValidationForCollection;
-import core.framework.validate.validation.collection.SizeValidationForMap;
-import core.framework.validate.validation.number.DecimalMaxValidation;
-import core.framework.validate.validation.number.DecimalMaxValidationForBigDecimal;
-import core.framework.validate.validation.number.DecimalMinValidation;
-import core.framework.validate.validation.number.DecimalMinValidationForBigDecimal;
-import core.framework.validate.validation.number.MaxValidation;
-import core.framework.validate.validation.number.MinValidation;
-import core.framework.validate.validation.string.NotBlankValidation;
-import core.framework.validate.validation.string.NotEmptyValidationForString;
-import core.framework.validate.validation.string.PatternValidation;
-import core.framework.validate.validation.string.SizeValidationForString;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.MessageInterpolator;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -132,7 +108,7 @@ public class BeanValidationSource {
 
     private void buildCollectionPropertyValidation(Field field, String accessName, StringBuilder validationBody, String parent) {
         String name = messagePropertiesName(field, parent);
-        Arrays.stream(field.getAnnotations()).forEach(annotation -> {
+       /* Arrays.stream(field.getAnnotations()).forEach(annotation -> {
             if (annotation instanceof Size ann) {
                 String message = String.format(MESSAGE_TEMPLATE, name,
                         MessageFormat.format(MESSAGE_INTERPOLATOR.interpolate(ann.message(), null), ann.min(), ann.max()));
@@ -141,7 +117,7 @@ public class BeanValidationSource {
                 String message = String.format(MESSAGE_TEMPLATE, name, MESSAGE_INTERPOLATOR.interpolate(ann.message(), null));
                 validationBody.append(NotEmptyValidationForCollection.getValidation(accessName, message));
             }
-        });
+        });*/
 
         Class<?> valueClass = listValueClass(field.getGenericType());
         if (!isValueClass(valueClass)) {
@@ -152,7 +128,7 @@ public class BeanValidationSource {
 
     private void buildMapPropertyValidation(Field field, String accessName, StringBuilder validationBody, String parent) {
         String name = messagePropertiesName(field, parent);
-        Arrays.stream(field.getAnnotations()).forEach(annotation -> {
+       /* Arrays.stream(field.getAnnotations()).forEach(annotation -> {
             if (annotation instanceof Size ann) {
                 String message = String.format(MESSAGE_TEMPLATE, name,
                         MessageFormat.format(MESSAGE_INTERPOLATOR.interpolate(ann.message(), null), ann.min(), ann.max()));
@@ -161,7 +137,7 @@ public class BeanValidationSource {
                 String message = String.format(MESSAGE_TEMPLATE, name, MESSAGE_INTERPOLATOR.interpolate(ann.message(), null));
                 validationBody.append(NotEmptyValidationForMap.getValidation(accessName, message));
             }
-        });
+        });*/
 
         Type valueType = mapValueType(field.getGenericType());
         if (isList(valueType)) return; // ensured by class validator, if it's list it must be List<Value>
@@ -176,7 +152,7 @@ public class BeanValidationSource {
     private void buildNumberValidation(Field field, Class<?> fieldClass, String accessName, StringBuilder validationBody, String parent) {
         String name = messagePropertiesName(field, parent);
         Arrays.stream(field.getAnnotations()).forEach(annotation -> {
-            if (annotation instanceof Min ann) {
+            /*if (annotation instanceof Min ann) {
                 String message = String.format(MESSAGE_TEMPLATE, name,
                         MessageFormat.format(MESSAGE_INTERPOLATOR.interpolate(ann.message(), null), ann.value()));
                 validationBody.append(MinValidation.getValidation(accessName, message, ann.value()));
@@ -200,14 +176,14 @@ public class BeanValidationSource {
                 } else {
                     validationBody.append(DecimalMaxValidation.getValidation(accessName, message, ann.value()));
                 }
-            }
+            }*/
         });
     }
 
     private void buildStringPropertyValidation(Field field, String accessName, StringBuilder validationBody, String parent) {
         String name = messagePropertiesName(field, parent);
         Arrays.stream(field.getAnnotations()).forEach(annotation -> {
-            if (annotation instanceof NotBlank ann) {
+            /*if (annotation instanceof NotBlank ann) {
                 String message = String.format(MESSAGE_TEMPLATE, name, MESSAGE_INTERPOLATOR.interpolate(ann.message(), null));
                 validationBody.append(NotBlankValidation.getValidation(accessName, message));
             } else if (annotation instanceof Size ann) {
@@ -223,7 +199,7 @@ public class BeanValidationSource {
                 String patternVariable = variable(ann.regexp());
                 this.fields.add(PatternValidation.patternField(patternFieldName, patternVariable));
                 validationBody.append(PatternValidation.getValidation(accessName, message, patternFieldName));
-            }
+            }*/
         });
     }
 

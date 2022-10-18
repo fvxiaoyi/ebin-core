@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: alerting-service
+  kafka:
+    consumer:
+      bootstrapServers:
+        - 192.168.19.1:9092
+    listener:
+      type: BATCH
+      concurrency: 2

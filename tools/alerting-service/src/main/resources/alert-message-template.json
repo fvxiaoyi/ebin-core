@@ -1,0 +1,39 @@
+{
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Oops, we got a new error, please fix it ASAP. You can find the kibana log *<%6$s| over here> !*"
+      }
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*App:*\n %1$s"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Action:*\n %2$s"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Error code:*\n %3$s"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Time:*\n %4$s"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Error message:*\n %5$s"
+        }
+      ]
+    },
+    {
+      "type": "divider"
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 package core.framework.configuration;
 
-import core.framework.domain.PersistenceUnitCustomizer;
-import core.framework.domain.event.DomainEventRegistrationListener;
-import core.framework.domain.event.HibernatePostCommitEventListener;
-import core.framework.domain.event.HibernatePreCommitEventListener;
+import core.framework.jpa.PersistenceUnitCustomizer;
+import core.framework.jpa.event.DomainEventRegistrationListener;
+import core.framework.jpa.event.HibernatePostCommitEventListener;
+import core.framework.jpa.event.HibernatePreCommitEventListener;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.event.spi.EventType;
 import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilderCustomizer;

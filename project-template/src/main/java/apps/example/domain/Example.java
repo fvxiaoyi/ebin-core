@@ -1,6 +1,6 @@
 package apps.example.domain;
 
-import core.framework.domain.impl.AbstractAggregateRoot;
+import core.framework.jpa.impl.AbstractAggregateRoot;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

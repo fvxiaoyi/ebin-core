@@ -2,7 +2,7 @@ package apps.example.application.listener;
 
 import apps.example.application.publisher.ExampleCreatedPublisher;
 import apps.example.domain.event.ExampleCreatedEvent;
-import core.framework.domain.event.DomainPostEventListener;
+import core.framework.jpa.event.DomainPostEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

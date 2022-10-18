@@ -9,10 +9,11 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>framework-parent</module>
+        <module>core-parent</module>
+        <module>core-modules</module>
         <module>framework-core</module>
-        <module>framework-core-api</module>
         <module>project-template</module>
         <module>tools/spring-docker-package-maven-plugin</module>
+        <module>tools/alerting-service</module>
     </modules>
 </project>

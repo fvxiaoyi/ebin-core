@@ -2,7 +2,7 @@ package apps.example.infrastructure.repo;
 
 import apps.example.domain.Example;
 import apps.example.domain.service.ExampleRepo;
-import core.framework.domain.impl.AbstractRepository;
+import core.framework.jpa.impl.AbstractRepository;
 import org.springframework.stereotype.Repository;
 
 /**

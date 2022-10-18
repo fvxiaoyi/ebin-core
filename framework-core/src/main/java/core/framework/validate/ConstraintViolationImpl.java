@@ -7,7 +7,12 @@ import javax.validation.metadata.ConstraintDescriptor;
 /**
  * @author ebin
  */
-public record ConstraintViolationImpl<T>(String message) implements ConstraintViolation<T> {
+public class ConstraintViolationImpl<T> implements ConstraintViolation<T> {
+    private String message;
+
+    public ConstraintViolationImpl(String message) {
+        this.message = message;
+    }
 
     public static <T> ConstraintViolation<T> of(String message) {
         return new ConstraintViolationImpl<>(message);
