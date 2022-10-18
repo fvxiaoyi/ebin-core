@@ -1,7 +1,7 @@
-package core.framework.domain.impl;
+package core.framework.jpa.impl;
 
-import core.framework.domain.AggregateRoot;
-import core.framework.domain.DomainEvent;
+import core.framework.jpa.AggregateRoot;
+import core.framework.jpa.DomainEvent;
 
 import java.time.ZonedDateTime;
 

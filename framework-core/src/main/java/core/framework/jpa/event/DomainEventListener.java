@@ -1,7 +1,7 @@
-package core.framework.domain.event;
+package core.framework.jpa.event;
 
-import core.framework.domain.AggregateRoot;
-import core.framework.domain.DomainEvent;
+import core.framework.jpa.AggregateRoot;
+import core.framework.jpa.DomainEvent;
 
 /**
  * @author ebin

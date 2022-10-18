@@ -1,4 +1,4 @@
-package core.framework.domain;
+package core.framework.jpa;
 
 import java.time.ZonedDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
-package core.framework.domain;
+package core.framework.jpa;
 
 /**
  * @author ebin

@@ -1,7 +1,7 @@
-package core.framework.domain.impl;
+package core.framework.jpa.impl;
 
-import core.framework.domain.AbstractDomainEventAggregateRoot;
-import core.framework.domain.AggregateRoot;
+import core.framework.jpa.AbstractDomainEventAggregateRoot;
+import core.framework.jpa.AggregateRoot;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

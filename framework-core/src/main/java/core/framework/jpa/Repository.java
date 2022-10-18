@@ -1,6 +1,6 @@
-package core.framework.domain;
+package core.framework.jpa;
 
-import core.framework.domain.impl.AbstractAggregateRoot;
+import core.framework.jpa.impl.AbstractAggregateRoot;
 import org.hibernate.jpa.QueryHints;
 
 import javax.persistence.TypedQuery;

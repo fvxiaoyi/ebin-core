@@ -1,6 +1,6 @@
-package core.framework.domain.impl;
+package core.framework.jpa.impl;
 
-import core.framework.domain.Entity;
+import core.framework.jpa.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
