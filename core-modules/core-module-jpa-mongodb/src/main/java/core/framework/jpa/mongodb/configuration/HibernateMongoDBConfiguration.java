@@ -1,14 +1,16 @@
 package core.framework.jpa.mongodb.configuration;
 
-import core.framework.jpa.mongodb.HibernateOGMEntityManagerCreator;
-import core.framework.jpa.support.ConfigurableEntityManagerFactoryBean;
-import core.framework.jpa.support.ConfigurablePersistenceUnitInfo;
 import core.framework.jpa.event.DomainEventTrackingAdaptor;
 import core.framework.jpa.mongodb.HibernateMongoDBDatastoreProvider;
 import core.framework.jpa.mongodb.HibernateMongoDBDialect;
+import core.framework.jpa.mongodb.HibernateOGMEntityManagerCreator;
 import core.framework.jpa.mongodb.HibernateOGMPersistenceProvider;
 import core.framework.jpa.mongodb.impl.MongoDBDomainEventTracking;
 import core.framework.jpa.mongodb.impl.MongoDBDomainEventTrackingAdaptor;
+import core.framework.jpa.support.ConfigurableEntityManagerFactoryBean;
+import core.framework.jpa.support.ConfigurablePersistenceUnitInfo;
+import org.hibernate.boot.registry.classloading.internal.TcclLookupPrecedence;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.ogm.datastore.mongodb.MongoDBProperties;
 import org.hibernate.ogm.datastore.mongodb.options.ReadPreferenceType;
 import org.springframework.beans.factory.ObjectProvider;
@@ -60,6 +62,7 @@ public class HibernateMongoDBConfiguration {
 
         properties.put(MongoDBProperties.READ_PREFERENCE, ReadPreferenceType.SECONDARY_PREFERRED);
         properties.put(MongoDBProperties.GRID_DIALECT, HibernateMongoDBDialect.class.getName());
+        properties.put(AvailableSettings.TC_CLASSLOADER, TcclLookupPrecedence.BEFORE.toString());
 
         ConfigurablePersistenceUnitInfo configurablePersistenceUnitInfo = new ConfigurablePersistenceUnitInfo(MONGODB_PERSISTENCE_UNIT_INFO_NAME);
         configurablePersistenceUnitInfo.setBasePackagePath(jpaMongodbProperties.getBasePackagePath());

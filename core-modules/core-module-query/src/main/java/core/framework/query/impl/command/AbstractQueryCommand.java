@@ -1,4 +1,6 @@
-package core.framework.query;
+package core.framework.query.impl.command;
+
+import core.framework.query.QueryCommand;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,6 +11,23 @@ import java.util.Map;
  */
 public abstract class AbstractQueryCommand<T> implements QueryCommand<T> {
     private final Map<String, Object> queryParams = new HashMap<>();
+    private final String queryName;
+    private final Class<T> resultType;
+
+    public AbstractQueryCommand(String queryName, Class<T> resultType) {
+        this.queryName = queryName;
+        this.resultType = resultType;
+    }
+
+    @Override
+    public String getQueryName() {
+        return queryName;
+    }
+
+    @Override
+    public Class<T> getResultType() {
+        return resultType;
+    }
 
     @Override
     public Map<String, Object> getQueryParam() {

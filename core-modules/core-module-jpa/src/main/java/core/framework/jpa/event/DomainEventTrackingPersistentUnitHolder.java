@@ -4,6 +4,7 @@ import core.framework.jpa.AggregateRoot;
 import core.framework.jpa.DomainEvent;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

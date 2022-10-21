@@ -1,5 +1,7 @@
-package core.framework.query;
+package core.framework.query.impl.sql;
 
+import core.framework.query.QueryParser;
+import core.framework.query.impl.AbstractQueryService;
 import org.hibernate.jpa.QueryHints;
 import org.hibernate.transform.ResultTransformer;
 
@@ -13,13 +15,24 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author ebin
  */
-public class JPAQueryService extends AbstractSqlQueryService {
+public class JPASqlQueryService extends AbstractQueryService {
     private final EntityManager entityManager;
     private final Map<Class<?>, ResultTransformer> resultBeanTransformers = new ConcurrentHashMap<>();
 
-    public JPAQueryService(EntityManager entityManager, QueryParser queryParser) {
+    public JPASqlQueryService(EntityManager entityManager, QueryParser queryParser) {
         super(queryParser);
         this.entityManager = entityManager;
+    }
+
+    @Override
+    protected String getQueryStatement(String queryName, Map<String, Object> param) {
+        return this.queryParser.getQueryString(queryName, param);
+    }
+
+    @Override
+    protected String getTotalQueryStatement(String queryName, Map<String, Object> param) {
+        String sql = getQueryStatement(queryName, param);
+        return this.queryParser.parseTotalQueryString(sql);
     }
 
     protected <T> List<T> executeSelectQuery(String sql, Class<T> beanClass, Map<String, Object> param) {
@@ -37,6 +50,12 @@ public class JPAQueryService extends AbstractSqlQueryService {
         Query query = this.createQuery(sql, beanClass, param);
         query.setHint(QueryHints.HINT_FETCH_SIZE, 1);
         return query.getResultList().stream().findFirst();
+    }
+
+    @Override
+    protected Long executeTotalQuery(String sql, Map<String, Object> param) {
+        TotalQueryResult total = executeGetQuery(sql, TotalQueryResult.class, param).orElse(TotalQueryResult.EMPTY);
+        return total.getTotal().longValue();
     }
 
     private <T> Query createQuery(String sql, Class<T> beanType, Map<String, Object> param) {

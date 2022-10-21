@@ -13,31 +13,22 @@
 
     <artifactId>core-module-query</artifactId>
 
-    <properties>
-        <mybatis.version>3.5.10</mybatis.version>
-    </properties>
-
     <dependencies>
-
         <dependency>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <groupId>org.hibernate.common</groupId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>hibernate-commons-annotations</artifactId>
-                    <groupId>org.hibernate.common</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>core.framework</groupId>
-            <artifactId>core-module-json</artifactId>
+            <artifactId>core-module-jpa-mysql</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>core.framework</groupId>
+            <artifactId>core-module-jpa-mongodb</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -45,11 +36,5 @@
             <artifactId>spring-boot-starter</artifactId>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-        </dependency>
-
     </dependencies>
 </project>

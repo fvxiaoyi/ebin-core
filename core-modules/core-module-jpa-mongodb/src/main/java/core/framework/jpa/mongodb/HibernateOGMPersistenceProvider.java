@@ -25,7 +25,7 @@ public class HibernateOGMPersistenceProvider extends HibernateOgmPersistence {
         return new HibernateOGMEntityManagerFactoryBuilderImpl(
                 new PersistenceUnitInfoDescriptor(
                         info
-                ), protectiveCopy).build();
+                ), protectiveCopy, new ExtendClassLoaderServiceImpl()).build();
     }
 
     private void enforceOgmConfig(Map<Object, Object> map) {

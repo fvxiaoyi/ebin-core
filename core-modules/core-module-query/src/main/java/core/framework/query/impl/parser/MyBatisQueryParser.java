@@ -1,5 +1,6 @@
-package core.framework.query;
+package core.framework.query.impl.parser;
 
+import core.framework.query.QueryParser;
 import core.framework.query.utils.ResourcePatternResolverUtil;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.mapping.BoundSql;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
 
 import java.util.List;
-
+/**
+ * @author ebin
+ */
 public class MyBatisQueryParser implements InitializingBean, QueryParser {
     private final Logger logger = LoggerFactory.getLogger(MyBatisQueryParser.class);
     private Configuration configuration;

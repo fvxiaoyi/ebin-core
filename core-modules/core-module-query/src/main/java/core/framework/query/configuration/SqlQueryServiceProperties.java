@@ -1,4 +1,4 @@
-package core.framework.query;
+package core.framework.query.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

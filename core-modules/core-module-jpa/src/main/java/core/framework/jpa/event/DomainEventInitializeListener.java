@@ -4,10 +4,14 @@ import core.framework.jpa.configuration.DomainEventConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.orm.jpa.SharedEntityManagerCreator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author ebin
@@ -27,9 +31,12 @@ public class DomainEventInitializeListener implements ApplicationListener<Contex
     }
 
     private void initializeDomainEventTrackingPersistentUnitHolder(ApplicationContext applicationContext) {
-        Map<String, EntityManager> entityManagers = applicationContext.getBeansOfType(EntityManager.class);
+        Map<String, EntityManagerFactory> entityManagerFactories = applicationContext.getBeansOfType(EntityManagerFactory.class);
+
+        List<EntityManager> entityManagers = entityManagerFactories.values().stream().map(SharedEntityManagerCreator::createSharedEntityManager).collect(Collectors.toList());
+
         Map<String, DomainEventTrackingAdaptor> domainEventTrackingAdaptorMap = applicationContext.getBeansOfType(DomainEventTrackingAdaptor.class);
-        DomainEventTrackingPersistentUnitHolder.INSTANCE.setEntityManagers(entityManagers.values());
+        DomainEventTrackingPersistentUnitHolder.INSTANCE.setEntityManagers(entityManagers);
         DomainEventTrackingPersistentUnitHolder.INSTANCE.setDomainEventTrackingAdaptors(domainEventTrackingAdaptorMap.values());
     }
 

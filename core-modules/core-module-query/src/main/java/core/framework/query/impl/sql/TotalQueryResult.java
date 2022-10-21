@@ -1,4 +1,4 @@
-package core.framework.query;
+package core.framework.query.impl.sql;
 
 import java.math.BigInteger;
 
