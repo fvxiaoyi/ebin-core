@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>0.1.1${changelist}</revision>
+        <revision>0.1.2${changelist}</revision>
         <changelist>-SNAPSHOT</changelist>
         <java.version>15</java.version>
         <spring-cloud.version>2021.0.0</spring-cloud.version>
@@ -25,12 +25,17 @@
         <mongo.java.driver.version>3.12.11</mongo.java.driver.version>
         <validation.api.version>2.0.1.Final</validation.api.version>
         <hikari.version>4.0.3</hikari.version>
-        <mybatis.version>3.5.10</mybatis.version>
+        <mybatis.version>3.5.11</mybatis.version>
         <javassist.version>3.29.0-GA</javassist.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>core.framework</groupId>
+                <artifactId>core-module-query</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <dependency>
                 <groupId>core.framework</groupId>
                 <artifactId>core-module-json</artifactId>

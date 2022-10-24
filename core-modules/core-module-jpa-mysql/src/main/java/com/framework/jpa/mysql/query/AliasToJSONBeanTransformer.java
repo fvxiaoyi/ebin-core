@@ -1,4 +1,4 @@
-package core.framework.query.impl.sql;
+package com.framework.jpa.mysql.query;
 
 import core.framework.json.JSON;
 import org.hibernate.transform.AliasedTupleSubsetResultTransformer;

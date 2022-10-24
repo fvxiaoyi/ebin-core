@@ -1,4 +1,4 @@
-package core.framework.query.impl.sql;
+package com.framework.jpa.mysql.query;
 
 import core.framework.query.QueryParser;
 import core.framework.query.impl.AbstractQueryService;
@@ -15,11 +15,11 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author ebin
  */
-public class JPASqlQueryService extends AbstractQueryService {
+public class HibernateMysqlQueryService extends AbstractQueryService {
     private final EntityManager entityManager;
     private final Map<Class<?>, ResultTransformer> resultBeanTransformers = new ConcurrentHashMap<>();
 
-    public JPASqlQueryService(EntityManager entityManager, QueryParser queryParser) {
+    public HibernateMysqlQueryService(EntityManager entityManager, QueryParser queryParser) {
         super(queryParser);
         this.entityManager = entityManager;
     }

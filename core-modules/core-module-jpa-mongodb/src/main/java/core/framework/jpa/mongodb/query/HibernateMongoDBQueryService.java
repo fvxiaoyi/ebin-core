@@ -1,4 +1,4 @@
-package core.framework.query.impl.nosql;
+package core.framework.jpa.mongodb.query;
 
 import core.framework.json.JSON;
 import core.framework.query.QueryParser;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 /**
  * @author ebin
  */
-public class JPANoSqlQueryService extends AbstractQueryService {
+public class HibernateMongoDBQueryService extends AbstractQueryService {
     private final String TOTAL_QUERY_NAME_SUFFIX = ".total";
     private final EntityManager entityManager;
 
-    public JPANoSqlQueryService(EntityManager entityManager, QueryParser queryParser) {
+    public HibernateMongoDBQueryService(EntityManager entityManager, QueryParser queryParser) {
         super(queryParser);
         this.entityManager = entityManager;
     }

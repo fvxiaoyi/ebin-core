@@ -20,18 +20,6 @@
         </dependency>
 
         <dependency>
-            <groupId>core.framework</groupId>
-            <artifactId>core-module-jpa-mysql</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>core.framework</groupId>
-            <artifactId>core-module-jpa-mongodb</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <scope>compile</scope>

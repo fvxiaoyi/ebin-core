@@ -7,4 +7,6 @@ public interface QueryParser {
     String getQueryString(String queryName, Object params);
 
     String parseTotalQueryString(String queryString);
+
+    QueryType getQueryType(String queryName);
 }

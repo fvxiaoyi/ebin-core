@@ -18,6 +18,12 @@
         </dependency>
 
         <dependency>
+            <groupId>core.framework</groupId>
+            <artifactId>core-module-query</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
         </dependency>
