@@ -35,7 +35,6 @@ import java.util.Properties;
 @ConditionalOnProperty(prefix = "spring.jpa.mongodb", name = "host")
 @EnableConfigurationProperties({HibernateMongoDBProperties.class})
 public class HibernateMongoDBConfiguration {
-    private static final String EVENT_LISTENER_GROUP_NAME_TPL = "%s.%s";
     public final static String MONGODB_PERSISTENCE_UNIT_INFO_NAME = "mongodb";
     public final static String MONGODB_PERSISTENCE_UNIT_INFO_BEAN_NAME = "mongodbPersistenceUnitInfo";
     public final static String MONGODB_ENTITY_MANAGER_FACTORY_BEAN_NAME = "mongodbEntityManagerFactory";

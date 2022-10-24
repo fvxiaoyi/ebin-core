@@ -8,6 +8,8 @@ import core.framework.jpa.impl.AbstractDomainEvent;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.framework.jpa.mysql.configuration.HibernateMysqlConfiguration.MYSQL_PERSISTENCE_UNIT_INFO_NAME;
+
 /**
  * @author ebin
  */
@@ -24,7 +26,7 @@ public class MysqlDomainEventTrackingAdaptor implements DomainEventTrackingAdapt
     }
 
     @Override
-    public boolean support(AggregateRoot<?> aggregateRoot) {
-        return aggregateRoot instanceof MysqlAggregateRoot;
+    public boolean support(String persistenceUnitName) {
+        return MYSQL_PERSISTENCE_UNIT_INFO_NAME.equals(persistenceUnitName);
     }
 }

@@ -8,6 +8,8 @@ import core.framework.jpa.impl.AbstractDomainEvent;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static core.framework.jpa.mongodb.configuration.HibernateMongoDBConfiguration.MONGODB_PERSISTENCE_UNIT_INFO_NAME;
+
 /**
  * @author ebin
  */
@@ -24,7 +26,7 @@ public class MongoDBDomainEventTrackingAdaptor implements DomainEventTrackingAda
     }
 
     @Override
-    public boolean support(AggregateRoot<?> aggregateRoot) {
-        return aggregateRoot instanceof MongoDBAggregateRoot;
+    public boolean support(String persistenceUnitName) {
+        return MONGODB_PERSISTENCE_UNIT_INFO_NAME.equals(persistenceUnitName);
     }
 }

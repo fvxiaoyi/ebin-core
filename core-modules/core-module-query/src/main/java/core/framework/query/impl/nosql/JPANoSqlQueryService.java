@@ -43,7 +43,10 @@ public class JPANoSqlQueryService extends AbstractQueryService {
 
     @Override
     protected <T> List<T> executePagingQuery(String sql, Class<T> beanClass, Map<String, Object> param, Integer start, Integer limit) {
-        return null;
+        Query query = this.createQuery(sql, param);
+        query.setFirstResult(start).setMaxResults(limit).setHint(QueryHints.HINT_FETCH_SIZE, limit);
+        List<Map<String, Object>> resultList = query.getResultList();
+        return resultList.stream().map(result -> transformResult(result, beanClass)).collect(Collectors.toList());
     }
 
     @Override
@@ -55,7 +58,9 @@ public class JPANoSqlQueryService extends AbstractQueryService {
 
     @Override
     protected Long executeTotalQuery(String sql, Map<String, Object> param) {
-        return null;
+        Query query = this.createQuery(sql, param);
+        Map<String, Long> singleResult = (Map<String, Long>) query.getSingleResult();
+        return singleResult.getOrDefault("n", 0L);
     }
 
     private <T> Query createQuery(String sql, Map<String, Object> param) {
@@ -65,6 +70,7 @@ public class JPANoSqlQueryService extends AbstractQueryService {
     }
 
     private <T> T transformResult(Map<String, Object> result, Class<T> beanClass) {
+        // todo javassist gen map set method?
         Object id = result.remove("_id");
         if (id != null) {
             result.put("id", id);

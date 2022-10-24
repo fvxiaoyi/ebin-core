@@ -2,12 +2,12 @@ package core.framework.jpa.event;
 
 import core.framework.jpa.AggregateRoot;
 import core.framework.jpa.DomainEvent;
+import org.springframework.orm.jpa.SharedEntityManagerCreator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,8 @@ import java.util.Map;
 public class DomainEventTrackingPersistentUnitHolder {
     public static final DomainEventTrackingPersistentUnitHolder INSTANCE = new DomainEventTrackingPersistentUnitHolder();
 
-    private Map<Class<?>, EntityManager> entityManagerHolders;
+    private Map<String, EntityManager> entityManagers;
+    private Map<Class<?>, String> aggregateRootPersistenceType;
     private List<DomainEventTrackingAdaptor> domainEventTrackingAdaptors;
 
     private DomainEventTrackingPersistentUnitHolder() {
@@ -28,17 +29,22 @@ public class DomainEventTrackingPersistentUnitHolder {
         this.domainEventTrackingAdaptors = new ArrayList<>(domainEventTrackingAdaptors);
     }
 
-    protected void setEntityManagers(Collection<EntityManager> entityManagers) {
-        Map<Class<?>, EntityManager> map = new HashMap<>(entityManagers.size());
-        entityManagers.forEach(entityManager -> {
+    public void setManagerFactories(Collection<EntityManagerFactory> entityManagerFactories) {
+        this.entityManagers = new HashMap<>(entityManagerFactories.size());
+        this.aggregateRootPersistenceType = new HashMap<>();
+
+        entityManagerFactories.forEach(entityManagerFactory -> {
+            EntityManager entityManager = SharedEntityManagerCreator.createSharedEntityManager(entityManagerFactory);
+            String persistenceUnitName = (String) entityManagerFactory.getProperties().get("hibernate.ejb.persistenceUnitName");
+            this.entityManagers.put(persistenceUnitName, entityManager);
+
             entityManager.getMetamodel().getEntities().forEach(entityType -> {
                 Class<?> javaType = entityType.getJavaType();
                 if (AggregateRoot.class.isAssignableFrom(javaType)) {
-                    map.put(javaType, entityManager);
+                    this.aggregateRootPersistenceType.put(javaType, persistenceUnitName);
                 }
             });
         });
-        this.entityManagerHolders = Collections.unmodifiableMap(map);
     }
 
     public void persist(AggregateRoot<?> aggregateRoot) {
@@ -46,9 +52,10 @@ public class DomainEventTrackingPersistentUnitHolder {
         if (domainEvents.isEmpty()) {
             return;
         }
-        EntityManager entityManager = entityManagerHolders.get(aggregateRoot.getClass());
-        if (entityManager != null) {
-            domainEventTrackingAdaptors.stream().filter(f -> f.support(aggregateRoot)).findFirst().ifPresent(adaptor -> {
+        String persistenceUnitName = aggregateRootPersistenceType.get(aggregateRoot.getClass());
+        if (persistenceUnitName != null) {
+            EntityManager entityManager = entityManagers.get(persistenceUnitName);
+            domainEventTrackingAdaptors.stream().filter(f -> f.support(persistenceUnitName)).findFirst().ifPresent(adaptor -> {
                 adaptor.persist(aggregateRoot, entityManager);
             });
         }

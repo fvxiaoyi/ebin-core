@@ -10,5 +10,5 @@ import javax.persistence.EntityManager;
 public interface DomainEventTrackingAdaptor {
     void persist(AggregateRoot<?> aggregateRoot, EntityManager entityManager);
 
-    boolean support(AggregateRoot<?> aggregateRoot);
+    boolean support(String persistenceUnitName);
 }

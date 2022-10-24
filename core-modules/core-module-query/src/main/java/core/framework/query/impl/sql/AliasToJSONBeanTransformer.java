@@ -18,6 +18,7 @@ public class AliasToJSONBeanTransformer extends AliasedTupleSubsetResultTransfor
 
     @Override
     public Object transformTuple(Object[] tuple, String[] aliases) {
+        // todo javassist gen map set method?
         Map<Object, Object> map = new HashMap<>(tuple.length);
         for (int i = 0; i < tuple.length; i++) {
             String alias = aliases[i];

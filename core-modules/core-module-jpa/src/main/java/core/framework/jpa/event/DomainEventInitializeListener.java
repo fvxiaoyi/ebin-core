@@ -32,11 +32,8 @@ public class DomainEventInitializeListener implements ApplicationListener<Contex
 
     private void initializeDomainEventTrackingPersistentUnitHolder(ApplicationContext applicationContext) {
         Map<String, EntityManagerFactory> entityManagerFactories = applicationContext.getBeansOfType(EntityManagerFactory.class);
-
-        List<EntityManager> entityManagers = entityManagerFactories.values().stream().map(SharedEntityManagerCreator::createSharedEntityManager).collect(Collectors.toList());
-
         Map<String, DomainEventTrackingAdaptor> domainEventTrackingAdaptorMap = applicationContext.getBeansOfType(DomainEventTrackingAdaptor.class);
-        DomainEventTrackingPersistentUnitHolder.INSTANCE.setEntityManagers(entityManagers);
+        DomainEventTrackingPersistentUnitHolder.INSTANCE.setManagerFactories(entityManagerFactories.values());
         DomainEventTrackingPersistentUnitHolder.INSTANCE.setDomainEventTrackingAdaptors(domainEventTrackingAdaptorMap.values());
     }
 

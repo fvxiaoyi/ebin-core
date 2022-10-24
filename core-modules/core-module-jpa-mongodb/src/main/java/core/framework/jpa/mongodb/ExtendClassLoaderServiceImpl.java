@@ -29,6 +29,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 /**
+ * Make the custom service after the one provided by hibernate.
+ *
  * @author ebin
  */
 public class ExtendClassLoaderServiceImpl implements ClassLoaderService {
