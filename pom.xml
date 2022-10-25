@@ -16,4 +16,5 @@
         <module>tools/spring-docker-package-maven-plugin</module>
         <module>tools/alerting-service</module>
     </modules>
+
 </project>

@@ -1,13 +1,13 @@
 package core.framework.jpa.configuration;
 
-import java.util.List;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author ebin
  */
+@ConfigurationProperties(prefix = "spring.jpa.common")
 public class HibernateJPAProperties {
     private String basePackagePath;
-    private List<String> packagesToScan;
 
     public String getBasePackagePath() {
         return basePackagePath;
@@ -17,11 +17,4 @@ public class HibernateJPAProperties {
         this.basePackagePath = basePackagePath;
     }
 
-    public List<String> getPackagesToScan() {
-        return packagesToScan;
-    }
-
-    public void setPackagesToScan(List<String> packagesToScan) {
-        this.packagesToScan = packagesToScan;
-    }
 }

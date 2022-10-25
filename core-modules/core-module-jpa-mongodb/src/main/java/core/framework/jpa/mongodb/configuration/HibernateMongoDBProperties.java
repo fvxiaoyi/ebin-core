@@ -1,15 +1,15 @@
 package core.framework.jpa.mongodb.configuration;
 
-import core.framework.jpa.configuration.HibernateJPAProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
  * @author ebin
  */
 @ConfigurationProperties(prefix = "spring.jpa.mongodb")
-public class HibernateMongoDBProperties extends HibernateJPAProperties {
+public class HibernateMongoDBProperties {
     private String host;
 
     private String database;
@@ -21,6 +21,8 @@ public class HibernateMongoDBProperties extends HibernateJPAProperties {
     private String password;
 
     private String authenticationDatabase;
+
+    private List<String> packagesToScan;
 
     public String getHost() {
         return host;
@@ -68,5 +70,13 @@ public class HibernateMongoDBProperties extends HibernateJPAProperties {
 
     public void setAuthenticationDatabase(String authenticationDatabase) {
         this.authenticationDatabase = authenticationDatabase;
+    }
+
+    public List<String> getPackagesToScan() {
+        return packagesToScan;
+    }
+
+    public void setPackagesToScan(List<String> packagesToScan) {
+        this.packagesToScan = packagesToScan;
     }
 }

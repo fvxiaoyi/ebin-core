@@ -6,9 +6,10 @@ import com.framework.jpa.mysql.impl.MysqlDomainEventTracking;
 import com.framework.jpa.mysql.impl.MysqlDomainEventTrackingAdaptor;
 import com.mysql.cj.conf.PropertyKey;
 import com.zaxxer.hikari.HikariDataSource;
+import core.framework.jpa.configuration.HibernateJPAProperties;
+import core.framework.jpa.event.DomainEventTrackingAdaptor;
 import core.framework.jpa.support.ConfigurableEntityManagerFactoryBean;
 import core.framework.jpa.support.ConfigurablePersistenceUnitInfo;
-import core.framework.jpa.event.DomainEventTrackingAdaptor;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ import java.util.Properties;
  * @author ebin
  */
 @Configuration
-@EnableConfigurationProperties({HibernateMysqlProperties.class})
+@EnableConfigurationProperties({HibernateJPAProperties.class, HibernateMysqlProperties.class})
 public class HibernateMysqlConfiguration {
     public static final int STATEMENT_FETCH_SIZE = 64;
     public static final String MYSQL_PERSISTENCE_UNIT_INFO_NAME = "mysql";
@@ -42,9 +43,11 @@ public class HibernateMysqlConfiguration {
     public static final String MYSQL_TRANSACTION_MANAGER_BEAN_NAME = "mysqlTransactionManager";
 
     private final HibernateMysqlProperties jpaMysqlProperties;
+    private final HibernateJPAProperties hibernateJPAProperties;
 
-    public HibernateMysqlConfiguration(HibernateMysqlProperties jpaMongodbProperties) {
+    public HibernateMysqlConfiguration(HibernateJPAProperties hibernateJPAProperties, HibernateMysqlProperties jpaMongodbProperties) {
         this.jpaMysqlProperties = jpaMongodbProperties;
+        this.hibernateJPAProperties = hibernateJPAProperties;
     }
 
     @Bean
@@ -69,7 +72,7 @@ public class HibernateMysqlConfiguration {
         properties.putIfAbsent(AvailableSettings.STATEMENT_FETCH_SIZE, STATEMENT_FETCH_SIZE);
 
         ConfigurablePersistenceUnitInfo configurablePersistenceUnitInfo = new ConfigurablePersistenceUnitInfo(MYSQL_PERSISTENCE_UNIT_INFO_NAME);
-        configurablePersistenceUnitInfo.setBasePackagePath(jpaMysqlProperties.getBasePackagePath());
+        configurablePersistenceUnitInfo.setBasePackagePath(hibernateJPAProperties.getBasePackagePath());
         configurablePersistenceUnitInfo.setPackagesToScan(jpaMysqlProperties.getPackagesToScan());
         configurablePersistenceUnitInfo.setPersistenceProviderClassName(SpringHibernateJpaPersistenceProvider.class.getName());
         configurablePersistenceUnitInfo.addManagedClassName(MysqlDomainEventTracking.class.getName());
