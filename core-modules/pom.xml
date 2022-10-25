@@ -20,5 +20,7 @@
         <module>core-module-jpa-mysql</module>
         <module>core-module-json</module>
         <module>core-module-validation</module>
+        <module>core-module-feign</module>
+        <module>core-module-web</module>
     </modules>
 </project>

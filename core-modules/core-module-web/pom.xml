@@ -9,31 +9,21 @@
         <version>${revision}</version>
         <relativePath>../../core-modules</relativePath>
     </parent>
-    <artifactId>core-module-jpa-mysql</artifactId>
+    <artifactId>core-module-web</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>core.framework</groupId>
-            <artifactId>core-module-jpa</artifactId>
+            <artifactId>core-module-json</artifactId>
         </dependency>
         <dependency>
-            <groupId>core.framework</groupId>
-            <artifactId>core-module-query</artifactId>
-            <scope>compile</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.protobuf</groupId>
-                    <artifactId>protobuf-java</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
         </dependency>
     </dependencies>
 </project>
