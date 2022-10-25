@@ -70,7 +70,7 @@ public class HibernateMysqlConfiguration {
         Properties properties = new Properties();
         properties.put(AvailableSettings.CONNECTION_PROVIDER_DISABLES_AUTOCOMMIT, "true");
         properties.put(AvailableSettings.SHOW_SQL, "true");
-        properties.putIfAbsent(AvailableSettings.JPA_VALIDATION_MODE, ValidationMode.NONE);
+        properties.putIfAbsent(AvailableSettings.JPA_VALIDATION_MODE, ValidationMode.AUTO);
         properties.putIfAbsent(AvailableSettings.ISOLATION, Connection.TRANSACTION_READ_COMMITTED);
         properties.putIfAbsent(AvailableSettings.STATEMENT_FETCH_SIZE, STATEMENT_FETCH_SIZE);
 

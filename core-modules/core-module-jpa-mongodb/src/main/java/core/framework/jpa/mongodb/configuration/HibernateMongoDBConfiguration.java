@@ -26,6 +26,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.ValidationMode;
 import javax.persistence.spi.PersistenceUnitTransactionType;
 import java.util.Properties;
 
@@ -65,6 +66,7 @@ public class HibernateMongoDBConfiguration {
         properties.put(MongoDBProperties.READ_PREFERENCE, ReadPreferenceType.SECONDARY_PREFERRED);
         properties.put(MongoDBProperties.GRID_DIALECT, HibernateMongoDBDialect.class.getName());
         properties.put(AvailableSettings.TC_CLASSLOADER, TcclLookupPrecedence.BEFORE.toString());
+        properties.putIfAbsent(AvailableSettings.JPA_VALIDATION_MODE, ValidationMode.AUTO);
 
         ConfigurablePersistenceUnitInfo configurablePersistenceUnitInfo = new ConfigurablePersistenceUnitInfo(MONGODB_PERSISTENCE_UNIT_INFO_NAME);
         configurablePersistenceUnitInfo.setBasePackagePath(hibernateJPAProperties.getBasePackagePath());

@@ -15,9 +15,6 @@ public class DomainEventIntegrator implements Integrator {
     @Override
     public void integrate(Metadata metadata, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
         EventListenerRegistry eventListenerRegistry = serviceRegistry.getService(EventListenerRegistry.class);
-        eventListenerRegistry.appendListeners(EventType.PRE_INSERT, HibernatePreCommitEventListener.class);
-        eventListenerRegistry.appendListeners(EventType.PRE_UPDATE, HibernatePreCommitEventListener.class);
-
         eventListenerRegistry.appendListeners(EventType.POST_INSERT, HibernatePreCommitEventListener.class);
         eventListenerRegistry.appendListeners(EventType.POST_UPDATE, HibernatePreCommitEventListener.class);
         eventListenerRegistry.appendListeners(EventType.POST_DELETE, HibernatePreCommitEventListener.class);

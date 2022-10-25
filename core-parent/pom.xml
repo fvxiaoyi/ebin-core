@@ -29,6 +29,7 @@
         <javassist.version>3.29.0-GA</javassist.version>
         <logstash-logback-encoder.version>7.0.1</logstash-logback-encoder.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
+        <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
     </properties>
 
     <dependencyManagement>
@@ -112,6 +113,11 @@
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
                 <version>${jaxb-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
