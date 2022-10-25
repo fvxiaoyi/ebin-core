@@ -2,12 +2,12 @@ package apps.example.infrastructure.repo;
 
 import apps.example.domain.Example;
 import apps.example.domain.service.ExampleRepo;
-import core.framework.jpa.impl.AbstractRepository;
+import com.framework.jpa.mysql.impl.AbstractMysqlRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * @author ebin
  */
 @Repository
-public class ExampleRepoImpl extends AbstractRepository<Example> implements ExampleRepo {
+public class ExampleRepoImpl extends AbstractMysqlRepository<Example> implements ExampleRepo {
 }

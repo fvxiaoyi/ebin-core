@@ -9,9 +9,11 @@ spring:
     password: root
     type: com.zaxxer.hikari.HikariDataSource
   jpa:
-    showSql: true
-    openInView: false
-    database: MYSQL
+    common:
+      basePackagePath: apps.example
+    mysql:
+      packagesToScan:
+        - apps.example.*
 #  flyway:
 #    enabled: true
 #    baselineOnMigrate: true

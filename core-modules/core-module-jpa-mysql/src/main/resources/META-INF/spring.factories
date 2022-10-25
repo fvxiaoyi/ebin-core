@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.framework.jpa.mysql.configuration.HibernateMysqlConfiguration,\
+com.framework.jpa.mysql.configuration.HibernateMysqlQueryServiceConfiguration
+
+org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=com.framework.jpa.mysql.configuration.ExcludeAutoConfigurationImportFilter

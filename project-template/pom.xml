@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>core.framework</groupId>
-        <artifactId>framework-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>core-parent</artifactId>
+        <version>0.1.2-SNAPSHOT</version>
         <relativePath/>
     </parent>
     <groupId>com.example</groupId>
@@ -15,20 +15,27 @@
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
 
+    <properties>
+        <core.version>0.1.2-SNAPSHOT</core.version>
+    </properties>
+
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
             <version>3.2.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>core.framework</groupId>
+            <artifactId>core-module-web</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>core.framework</groupId>
-            <artifactId>framework-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <artifactId>core-module-jpa-mysql</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -41,19 +48,17 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://raw.githubusercontent.com/fvxiaoyi/maven-repo/main</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>github</id>
-            <url>https://raw.githubusercontent.com/fvxiaoyi/maven-repo/main</url>
-        </pluginRepository>
-    </pluginRepositories>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>core.framework</groupId>
+                <artifactId>core-dependencies</artifactId>
+                <version>${core.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>

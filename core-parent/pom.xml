@@ -28,10 +28,21 @@
         <mybatis.version>3.5.11</mybatis.version>
         <javassist.version>3.29.0-GA</javassist.version>
         <logstash-logback-encoder.version>7.0.1</logstash-logback-encoder.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>core.framework</groupId>
+                <artifactId>core-module-feign</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>core.framework</groupId>
+                <artifactId>core-module-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <dependency>
                 <groupId>core.framework</groupId>
                 <artifactId>core-module-query</artifactId>
@@ -96,6 +107,11 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>

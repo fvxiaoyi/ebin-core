@@ -9,12 +9,12 @@ import java.util.Map;
 /**
  * @author ebin
  */
-public abstract class AbstractQueryCommand<T> implements QueryCommand<T> {
+public class DefaultQueryCommand<T> implements QueryCommand<T> {
     private final Map<String, Object> queryParams = new HashMap<>();
     private final String queryName;
     private final Class<T> resultType;
 
-    public AbstractQueryCommand(String queryName, Class<T> resultType) {
+    public DefaultQueryCommand(String queryName, Class<T> resultType) {
         this.queryName = queryName;
         this.resultType = resultType;
     }

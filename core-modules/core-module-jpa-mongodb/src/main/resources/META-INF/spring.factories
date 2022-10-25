@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+core.framework.jpa.mongodb.configuration.HibernateMongoDBConfiguration,\
+core.framework.jpa.mongodb.configuration.HibernateMongoDBQueryServiceConfiguration
+
+org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=core.framework.jpa.mongodb.configuration.ExcludeAutoConfigurationImportFilter

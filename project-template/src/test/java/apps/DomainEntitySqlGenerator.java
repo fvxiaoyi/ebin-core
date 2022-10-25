@@ -1,6 +1,6 @@
 package apps;
 
-import core.framework.jpa.impl.DomainEventTracking;
+import com.framework.jpa.mysql.impl.MysqlDomainEventTracking;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.MySQL57Dialect;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
@@ -28,7 +28,7 @@ import java.util.Properties;
 public class DomainEntitySqlGenerator {
     public static void main(String... strings) {
         String pkg = DemoApplicationTests.class.getPackage().getName();
-        List<Class<?>> managerClasses = List.of(DomainEventTracking.class);
+        List<Class<?>> managerClasses = List.of(MysqlDomainEventTracking.class);
         stdoutUpdateSchema(pkg, managerClasses);
     }
 

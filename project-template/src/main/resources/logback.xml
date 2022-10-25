@@ -17,7 +17,7 @@
             <charset class="java.nio.charset.Charset">UTF-8</charset>
         </encoder>
         <target>System.err</target>
-        <filter class="core.framework.utils.log.MultiLevelFilter">
+        <filter class="core.framework.web.log.MultiLevelFilter">
             <levels>WARN,ERROR</levels>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
