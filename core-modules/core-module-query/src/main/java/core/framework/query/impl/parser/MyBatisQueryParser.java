@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 public class MyBatisQueryParser implements InitializingBean, QueryParser {
     private final Logger logger = LoggerFactory.getLogger(MyBatisQueryParser.class);
-    private final static Pattern SELECT_SQL_PATTERN = Pattern.compile(".*select.*from\\s+.*(where)?.*");
+    private final static Pattern SELECT_SQL_PATTERN = Pattern.compile(".*(select|SELECT).*(from|FROM)\\s+.*(where|WHERE)?.*");
     private Map<String, QueryType> queryTypes;
     private Configuration configuration;
 

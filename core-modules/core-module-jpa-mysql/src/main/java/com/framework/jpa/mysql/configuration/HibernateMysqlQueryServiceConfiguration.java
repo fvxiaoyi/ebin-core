@@ -4,13 +4,14 @@ import com.framework.jpa.mysql.query.HibernateMysqlQueryService;
 import core.framework.query.QueryParser;
 import core.framework.query.QueryService;
 import core.framework.query.QueryType;
+import core.framework.query.configuration.QueryServiceConfiguration;
 import core.framework.query.configuration.RouterQueryServiceCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +22,7 @@ import static com.framework.jpa.mysql.configuration.HibernateMysqlConfiguration.
  * @author ebin
  */
 @Configuration
+@AutoConfigureAfter(QueryServiceConfiguration.class)
 @ConditionalOnBean(QueryParser.class)
 public class HibernateMysqlQueryServiceConfiguration {
     public final static String HIBERNATE_MYSQL_QUERY_SERVICE = "hibernateMysqlQueryService";
