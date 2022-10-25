@@ -22,13 +22,14 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
     private final List<ExceptionHandler> exceptionHandlers = new ArrayList<>();
     private final DefaultExceptionHandler defaultExceptionHandler = new DefaultExceptionHandler();
 
-    public DefaultHandlerExceptionResolver(List<ExceptionHandler> exceptionHandlers) {
+    public DefaultHandlerExceptionResolver() {
         this.jsonView = new MappingJackson2JsonView();
         this.jsonView.setExtractValueFromSingleKeyModel(true);
         addDefaultExceptionHandler();
-        if (exceptionHandlers != null) {
-            this.exceptionHandlers.addAll(exceptionHandlers);
-        }
+    }
+
+    public void addExceptionHandler(ExceptionHandler exceptionHandler) {
+        this.exceptionHandlers.add(exceptionHandler);
     }
 
     @Override

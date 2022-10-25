@@ -8,21 +8,21 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
-import java.util.Optional;
 
 @Configuration
 public class DefaultWebMvcConfigurer implements WebMvcConfigurer {
-    private final ExceptionHandlerCustomizer exceptionHandlerCustomizer;
+    private final ObjectProvider<ExceptionHandlerCustomizer> exceptionHandlerCustomizers;
 
     public DefaultWebMvcConfigurer(ObjectProvider<ExceptionHandlerCustomizer> exceptionHandlerCustomizers) {
-        this.exceptionHandlerCustomizer = exceptionHandlerCustomizers.getIfAvailable();
+        this.exceptionHandlerCustomizers = exceptionHandlerCustomizers;
     }
 
     @Override
     public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
-        resolvers.add(new DefaultHandlerExceptionResolver(
-                Optional.ofNullable(exceptionHandlerCustomizer)
-                        .map(ExceptionHandlerCustomizer::exceptionHandlers).orElse(null)
-        ));
+        DefaultHandlerExceptionResolver defaultHandlerExceptionResolver = new DefaultHandlerExceptionResolver();
+        exceptionHandlerCustomizers.orderedStream().forEach(exceptionHandlerCustomizer -> {
+            exceptionHandlerCustomizer.exceptionHandlers().forEach(defaultHandlerExceptionResolver::addExceptionHandler);
+        });
+        resolvers.add(defaultHandlerExceptionResolver);
     }
 }

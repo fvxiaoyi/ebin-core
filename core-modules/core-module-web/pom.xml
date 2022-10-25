@@ -13,6 +13,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
             <groupId>core.framework</groupId>
             <artifactId>core-module-json</artifactId>
         </dependency>
