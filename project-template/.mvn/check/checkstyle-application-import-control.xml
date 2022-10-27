@@ -4,5 +4,4 @@
 
 <import-control pkg=".*\.application\.?" regex="true" strategyOnMismatch="allowed">
     <disallow pkg=".*\.infrastructure.*" regex="true"/>
-    <disallow pkg=".*\.interfaces.*" regex="true"/>
 </import-control>

@@ -3,3 +3,6 @@
 2. target/generated-sources -> mvn install
 3. mvn archetype:crawl
 4. idea new module add archetype
+
+# Project structure
+![](structure.png)
