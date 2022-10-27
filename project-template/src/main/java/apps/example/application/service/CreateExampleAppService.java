@@ -1,9 +1,9 @@
 package apps.example.application.service;
 
-import apps.example.application.service.dto.CreateExampleParam;
-import apps.example.application.service.dto.ExampleDTO;
 import apps.example.domain.Example;
 import apps.example.domain.service.CreateExampleService;
+import apps.example.interfaces.controller.request.CreateExampleRequest;
+import apps.example.interfaces.controller.response.CreateExampleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +17,12 @@ public class CreateExampleAppService {
     private CreateExampleService createExampleService;
 
     @Transactional
-    public ExampleDTO create(CreateExampleParam param) {
-        Example example = createExampleService.create(param.name);
-        ExampleDTO exampleDTO = new ExampleDTO();
-        exampleDTO.id = example.getId();
-        exampleDTO.name = example.getName();
-        return exampleDTO;
+    public CreateExampleResponse create(CreateExampleRequest request) {
+        Example example = createExampleService.create(request.name);
+        CreateExampleResponse response = new CreateExampleResponse();
+       /* response.example = new CreateExampleResponse.Example();
+        response.example.id = example.getId();
+        response.example.name = example.getName();*/
+        return response;
     }
 }

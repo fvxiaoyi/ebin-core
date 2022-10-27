@@ -1,6 +1,6 @@
 package apps.example.infrastructure.controller.assembler;
 
-import apps.example.application.service.dto.ExampleDTO;
+import apps.example.application.service.dto.CreatedExampleResultDTO;
 import apps.example.interfaces.controller.response.CreateExampleResponse;
 
 /**
@@ -10,7 +10,7 @@ public final class CreateExampleResponseAssembler {
     private CreateExampleResponseAssembler() {
     }
 
-    public static CreateExampleResponse of(ExampleDTO example) {
+    public static CreateExampleResponse of(CreatedExampleResultDTO example) {
         CreateExampleResponse response = new CreateExampleResponse();
         return response;
     }

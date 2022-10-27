@@ -3,9 +3,7 @@ package core.framework.jpa.impl;
 import core.framework.json.JSON;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -41,6 +39,7 @@ public abstract class AbstractDomainEventTracking {
     }
 
     public AbstractDomainEventTracking(AbstractDomainEvent<?> event) {
+        this.eventName = event.getClass().getName();
         this.aggregateRootClass = event.getSource().getClass().getTypeName();
         this.aggregateRootId = String.valueOf(event.getSource().getId());
         this.createdTime = ZonedDateTime.now();

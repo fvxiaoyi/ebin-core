@@ -1,6 +1,6 @@
 package apps.example.infrastructure.service.assembler;
 
-import apps.example.application.service.dto.ExampleDTO;
+import apps.example.application.service.dto.CreatedExampleResultDTO;
 import apps.example.interfaces.service.response.GetExampleResponse;
 
 /**
@@ -10,7 +10,7 @@ public final class GetExampleResponseAssembler {
     private GetExampleResponseAssembler() {
     }
 
-    public static GetExampleResponse of(ExampleDTO example) {
+    public static GetExampleResponse of(CreatedExampleResultDTO example) {
         GetExampleResponse response = new GetExampleResponse();
         return response;
     }

@@ -1,11 +1,10 @@
 package apps.example.application.service.dto;
 
-import javax.validation.constraints.NotBlank;
-
 /**
  * @author ebin
  */
-public class CreateExampleParam {
-    @NotBlank
+public class CreatedExampleResultDTO {
+    public Long id;
+
     public String name;
 }

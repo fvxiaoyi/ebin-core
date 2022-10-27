@@ -1,6 +1,6 @@
 package apps.example.application.service;
 
-import apps.example.application.service.dto.ExampleDTO;
+import apps.example.application.service.dto.CreatedExampleResultDTO;
 import apps.example.application.service.exception.ExampleNotFoundException;
 import core.framework.query.QueryCommand;
 import core.framework.query.QueryService;
@@ -16,8 +16,8 @@ public class GetExampleAppService {
     @Autowired
     private QueryService queryService;
 
-    public ExampleDTO getExample(String id) {
-        QueryCommand<ExampleDTO> command = new DefaultQueryCommand<>("example.get", ExampleDTO.class);
+    public CreatedExampleResultDTO getExample(String id) {
+        QueryCommand<CreatedExampleResultDTO> command = new DefaultQueryCommand<>("example.get", CreatedExampleResultDTO.class);
         command.addQueryParam("id", id);
         return queryService.get(command).orElseThrow(() -> new ExampleNotFoundException(id));
     }
