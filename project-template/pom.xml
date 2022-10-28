@@ -6,7 +6,7 @@
         <groupId>core.framework</groupId>
         <artifactId>core-parent</artifactId>
         <version>0.1.2-SNAPSHOT</version>
-        <relativePath/>
+        <relativePath>../core-parent</relativePath>
     </parent>
     <groupId>com.example</groupId>
     <artifactId>project-template</artifactId>
@@ -29,13 +29,13 @@
         <dependency>
             <groupId>core.framework</groupId>
             <artifactId>core-module-web</artifactId>
+            <version>${core.version}</version>
         </dependency>
-
         <dependency>
             <groupId>core.framework</groupId>
             <artifactId>core-module-jpa-mysql</artifactId>
+            <version>${core.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -47,18 +47,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>core.framework</groupId>
-                <artifactId>core-dependencies</artifactId>
-                <version>${core.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <pluginManagement>
@@ -86,9 +74,14 @@
                         <artifactId>checkstyle</artifactId>
                         <version>9.3</version>
                     </dependency>
+                    <dependency>
+                        <groupId>core.framework</groupId>
+                        <artifactId>core-module-ddd-structure</artifactId>
+                        <version>${core.version}</version>
+                    </dependency>
                 </dependencies>
                 <configuration>
-                    <configLocation>${main.basedir}/.mvn/check/checkstyle.xml</configLocation>
+                    <configLocation>checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>

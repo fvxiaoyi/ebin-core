@@ -17,6 +17,7 @@
     <properties>
         <revision>0.1.2${changelist}</revision>
         <changelist>-SNAPSHOT</changelist>
+        <github.maven.repo.path>https://raw.githubusercontent.com/fvxiaoyi/maven-repo/main</github.maven.repo.path>
         <java.version>15</java.version>
         <spring-cloud.version>2021.0.0</spring-cloud.version>
         <hibernate.version>5.3.6.Final</hibernate.version>
@@ -34,6 +35,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>core.framework</groupId>
+                <artifactId>core-module-ddd-structure</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <dependency>
                 <groupId>core.framework</groupId>
                 <artifactId>core-module-feign</artifactId>
@@ -140,14 +146,14 @@
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://raw.githubusercontent.com/fvxiaoyi/maven-repo/main</url>
+            <url>${github.maven.repo.path}</url>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>github</id>
-            <url>https://raw.githubusercontent.com/fvxiaoyi/maven-repo/main</url>
+            <url>${github.maven.repo.path}</url>
         </pluginRepository>
     </pluginRepositories>
 
