@@ -78,17 +78,17 @@
         <module name="UnusedImports"/>
         <!-- infrastructure -> interface <-> application -> domain -->
         <module name="ImportControl">
-            <property name="file" value="checkstyle-domain-import-control.xml"/>
+            <property name="file" value="https://raw.githubusercontent.com/fvxiaoyi/ebin-core/main/core-modules/core-module-ddd-checkstyle/src/main/resources/checkstyle-domain-import-control.xml"/>
             <property name="path" value="^.*[\\/]src[\\/]main[\\/].*[\\/]domain\.?"/>
             <message key="import.control.disallowed" value="不允许的导入：{0}。领域层（domain）不可依赖基础设施层（infrastructure）、用户接口层（interfaces）、应用层（application）。"/>
         </module>
         <module name="ImportControl">
-            <property name="file" value="checkstyle-application-import-control.xml"/>
+            <property name="file" value="https://raw.githubusercontent.com/fvxiaoyi/ebin-core/main/core-modules/core-module-ddd-checkstyle/src/main/resources/checkstyle-application-import-control.xml"/>
             <property name="path" value="^.*[\\/]src[\\/]main[\\/].*[\\/]application\.?"/>
             <message key="import.control.disallowed" value="不允许的导入：{0}。应用层（application）不可依赖基础设施层（infrastructure）。"/>
         </module>
         <module name="ImportControl">
-            <property name="file" value="checkstyle-interface-import-control.xml"/>
+            <property name="file" value="https://raw.githubusercontent.com/fvxiaoyi/ebin-core/main/core-modules/core-module-ddd-checkstyle/src/main/resources/checkstyle-interface-import-control.xml"/>
             <property name="path" value="^.*[\\/]src[\\/]main[\\/].*[\\/]interfaces\.?"/>
             <message key="import.control.disallowed" value="不允许的导入：{0}。用户接口层（domain）不可依赖基础设施层（infrastructure）。"/>
         </module>

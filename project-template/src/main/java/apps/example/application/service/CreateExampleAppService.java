@@ -20,9 +20,9 @@ public class CreateExampleAppService {
     public CreateExampleResponse create(CreateExampleRequest request) {
         Example example = createExampleService.create(request.name);
         CreateExampleResponse response = new CreateExampleResponse();
-       /* response.example = new CreateExampleResponse.Example();
+        response.example = new CreateExampleResponse.Example();
         response.example.id = example.getId();
-        response.example.name = example.getName();*/
+        response.example.name = example.getName();
         return response;
     }
 }

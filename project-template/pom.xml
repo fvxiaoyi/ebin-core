@@ -76,7 +76,7 @@
                     </dependency>
                     <dependency>
                         <groupId>core.framework</groupId>
-                        <artifactId>core-module-ddd-structure</artifactId>
+                        <artifactId>core-module-ddd-checkstyle</artifactId>
                         <version>${core.version}</version>
                     </dependency>
                 </dependencies>
