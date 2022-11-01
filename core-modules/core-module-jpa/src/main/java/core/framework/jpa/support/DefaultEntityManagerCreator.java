@@ -3,7 +3,7 @@ package core.framework.jpa.support;
 /**
  * @author ebin
  */
-public class DefaultEntityManagerCreator extends EntityManagerCreator {
+public class DefaultEntityManagerCreator extends AbstractEntityManagerCreator {
 
     @Override
     protected Class<?>[] customizeInterfaces(Class<?>[] interfaces) {

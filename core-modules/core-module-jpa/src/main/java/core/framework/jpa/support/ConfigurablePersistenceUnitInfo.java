@@ -43,14 +43,14 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
     private static final String CLASS_RESOURCE_PATTERN = "/**/*.class";
     private static final String XML_RESOURCE_PATTERN = "/**/*Finder.xml";
     private static final String PACKAGE_INFO_SUFFIX = ".package-info";
-    private static final Set<AnnotationTypeFilter> entityTypeFilters;
+    private static final Set<AnnotationTypeFilter> ENTITY_TYPE_FILTERS;
 
     static {
-        entityTypeFilters = new LinkedHashSet<>(8);
-        entityTypeFilters.add(new AnnotationTypeFilter(Entity.class, false));
-        entityTypeFilters.add(new AnnotationTypeFilter(Embeddable.class, false));
-        entityTypeFilters.add(new AnnotationTypeFilter(MappedSuperclass.class, false));
-        entityTypeFilters.add(new AnnotationTypeFilter(Converter.class, false));
+        ENTITY_TYPE_FILTERS = new LinkedHashSet<>(8);
+        ENTITY_TYPE_FILTERS.add(new AnnotationTypeFilter(Entity.class, false));
+        ENTITY_TYPE_FILTERS.add(new AnnotationTypeFilter(Embeddable.class, false));
+        ENTITY_TYPE_FILTERS.add(new AnnotationTypeFilter(MappedSuperclass.class, false));
+        ENTITY_TYPE_FILTERS.add(new AnnotationTypeFilter(Converter.class, false));
     }
 
     private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
@@ -66,8 +66,9 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
 
     @Override
     public ClassLoader getNewTempClassLoader() {
-        ClassLoader tcl = (this.loadTimeWeaver != null ? this.loadTimeWeaver.getThrowawayClassLoader() :
-                new SimpleThrowawayClassLoader(this.classLoader));
+        ClassLoader tcl = this.loadTimeWeaver != null
+                ? this.loadTimeWeaver.getThrowawayClassLoader()
+                : new SimpleThrowawayClassLoader(this.classLoader);
         String packageToExclude = getPersistenceProviderPackageName();
         if (packageToExclude != null && tcl instanceof DecoratingClassLoader) {
             ((DecoratingClassLoader) tcl).excludePackage(packageToExclude);
@@ -114,8 +115,8 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
     }
 
     private void scanMappingResources(String pkg) {
-        String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
-                ClassUtils.convertClassNameToResourcePath(pkg) + XML_RESOURCE_PATTERN;
+        String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
+                + ClassUtils.convertClassNameToResourcePath(pkg) + XML_RESOURCE_PATTERN;
         try {
             Resource[] resources = this.resourcePatternResolver.getResources(pattern);
             for (Resource resource : resources) {
@@ -132,7 +133,7 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
     private void scanPackage(String pkg) {
         if (this.componentsIndex != null) {
             Set<String> candidates = new HashSet<>();
-            for (AnnotationTypeFilter filter : entityTypeFilters) {
+            for (AnnotationTypeFilter filter : ENTITY_TYPE_FILTERS) {
                 candidates.addAll(this.componentsIndex.getCandidateTypes(pkg, filter.getAnnotationType().getName()));
             }
             candidates.forEach(this::addManagedClassName);
@@ -142,8 +143,8 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
         }
 
         try {
-            String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
-                    ClassUtils.convertClassNameToResourcePath(pkg) + CLASS_RESOURCE_PATTERN;
+            String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
+                    + ClassUtils.convertClassNameToResourcePath(pkg) + CLASS_RESOURCE_PATTERN;
             Resource[] resources = this.resourcePatternResolver.getResources(pattern);
             MetadataReaderFactory readerFactory = new CachingMetadataReaderFactory(this.resourcePatternResolver);
             for (Resource resource : resources) {
@@ -172,7 +173,7 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
     }
 
     private boolean matchesFilter(MetadataReader reader, MetadataReaderFactory readerFactory) throws IOException {
-        for (TypeFilter filter : entityTypeFilters) {
+        for (TypeFilter filter : ENTITY_TYPE_FILTERS) {
             if (filter.match(reader, readerFactory)) {
                 return true;
             }

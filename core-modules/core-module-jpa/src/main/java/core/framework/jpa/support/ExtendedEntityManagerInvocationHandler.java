@@ -18,8 +18,7 @@ import java.lang.reflect.Method;
  * @author ebin
  */
 public class ExtendedEntityManagerInvocationHandler implements InvocationHandler, Serializable {
-
-    private static final Log logger = LogFactory.getLog(ExtendedEntityManagerInvocationHandler.class);
+    private static final Log LOGGER = LogFactory.getLog(ExtendedEntityManagerInvocationHandler.class);
 
     private final EntityManager target;
 
@@ -33,12 +32,12 @@ public class ExtendedEntityManagerInvocationHandler implements InvocationHandler
     private final boolean synchronizedWithTransaction;
 
     public ExtendedEntityManagerInvocationHandler(EntityManager target,
-                                                   @Nullable PersistenceExceptionTranslator exceptionTranslator, @Nullable Boolean jta,
-                                                   boolean containerManaged, boolean synchronizedWithTransaction) {
+                                                  @Nullable PersistenceExceptionTranslator exceptionTranslator, @Nullable Boolean jta,
+                                                  boolean containerManaged, boolean synchronizedWithTransaction) {
 
         this.target = target;
         this.exceptionTranslator = exceptionTranslator;
-        this.jta = (jta != null ? jta : isJtaEntityManager());
+        this.jta = jta != null ? jta : isJtaEntityManager();
         this.containerManaged = containerManaged;
         this.synchronizedWithTransaction = synchronizedWithTransaction;
     }
@@ -48,7 +47,7 @@ public class ExtendedEntityManagerInvocationHandler implements InvocationHandler
             this.target.getTransaction();
             return false;
         } catch (IllegalStateException ex) {
-            logger.debug("Cannot access EntityTransaction handle - assuming we're in a JTA environment");
+            LOGGER.debug("Cannot access EntityTransaction handle - assuming we're in a JTA environment");
             return true;
         }
     }
@@ -57,11 +56,10 @@ public class ExtendedEntityManagerInvocationHandler implements InvocationHandler
     @Nullable
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // Invocation on EntityManager interface coming in...
-
         switch (method.getName()) {
             case "equals":
                 // Only consider equal when proxies are identical.
-                return (proxy == args[0]);
+                return proxy == args[0];
             case "hashCode":
                 // Use hashCode of EntityManager proxy.
                 return hashCode();
@@ -109,6 +107,8 @@ public class ExtendedEntityManagerInvocationHandler implements InvocationHandler
                     return TransactionSynchronizationManager.hasResource(this.target);
                 }
                 break;
+            default:
+                break;
         }
 
         // Do automatic joining if required. Excludes toString, equals, hashCode calls.
@@ -135,24 +135,24 @@ public class ExtendedEntityManagerInvocationHandler implements InvocationHandler
             // Let's try whether we're in a JTA transaction.
             try {
                 this.target.joinTransaction();
-                logger.debug("Joined JTA transaction");
+                LOGGER.debug("Joined JTA transaction");
             } catch (TransactionRequiredException ex) {
                 if (!enforce) {
-                    logger.debug("No JTA transaction to join: " + ex);
+                    LOGGER.debug("No JTA transaction to join: " + ex);
                 } else {
                     throw ex;
                 }
             }
         } else {
             if (TransactionSynchronizationManager.isSynchronizationActive()) {
-                if (!TransactionSynchronizationManager.hasResource(this.target) &&
-                        !this.target.getTransaction().isActive()) {
+                if (!TransactionSynchronizationManager.hasResource(this.target)
+                        && !this.target.getTransaction().isActive()) {
                     enlistInCurrentTransaction();
                 }
-                logger.debug("Joined local transaction");
+                LOGGER.debug("Joined local transaction");
             } else {
                 if (!enforce) {
-                    logger.debug("No local transaction to join");
+                    LOGGER.debug("No local transaction to join");
                 } else {
                     throw new TransactionRequiredException("No local transaction to join");
                 }
@@ -168,9 +168,9 @@ public class ExtendedEntityManagerInvocationHandler implements InvocationHandler
         // start a transaction now and enlist a synchronization for commit or rollback later.
         EntityTransaction et = this.target.getTransaction();
         et.begin();
-        if (logger.isDebugEnabled()) {
-            logger.debug("Starting resource-local transaction on application-managed " +
-                    "EntityManager [" + this.target + "]");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Starting resource-local transaction on application-managed "
+                    + "EntityManager [" + this.target + "]");
         }
         ExtendedEntityManagerSynchronization extendedEntityManagerSynchronization =
                 new ExtendedEntityManagerSynchronization(this.target, this.exceptionTranslator);

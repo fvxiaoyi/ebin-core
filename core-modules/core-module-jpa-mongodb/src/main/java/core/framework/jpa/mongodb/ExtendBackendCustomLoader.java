@@ -95,7 +95,6 @@ public class ExtendBackendCustomLoader extends CustomLoader {
             Map<String, Object> entry;
             if (!customQuery.getCustomQueryReturns().isEmpty()) {
                 entry = new HashMap<>(customQuery.getCustomQueryReturns().size());
-                int i = 0;
                 for (Return queryReturn : customQuery.getCustomQueryReturns()) {
                     ScalarReturn scalarReturn = (ScalarReturn) queryReturn;
                     Type type = scalarReturn.getType();
@@ -113,7 +112,6 @@ public class ExtendBackendCustomLoader extends CustomLoader {
                 // should drive this based on the selected columns as otherwise the order might not be correct and/or
                 // null values will not show up
                 entry = new HashMap(tuple.getColumnNames().size());
-                int i = 0;
                 for (String column : tuple.getColumnNames()) {
                     entry.put(column, tuple.get(column));
                 }
@@ -135,7 +133,7 @@ public class ExtendBackendCustomLoader extends CustomLoader {
         private final QueryableGridDialect<T> gridDialect;
         private final BackendQuery<T> query;
 
-        public BackendCustomLoaderContext(QueryableGridDialect<T> gridDialect, BackendCustomQuery<T> customQuery) {
+        BackendCustomLoaderContext(QueryableGridDialect<T> gridDialect, BackendCustomQuery<T> customQuery) {
             this.gridDialect = gridDialect;
             this.query = new BackendQuery<T>(
                     customQuery.getQueryObject(),

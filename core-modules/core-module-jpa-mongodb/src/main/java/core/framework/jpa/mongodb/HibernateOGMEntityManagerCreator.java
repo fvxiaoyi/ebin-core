@@ -1,6 +1,6 @@
 package core.framework.jpa.mongodb;
 
-import core.framework.jpa.support.EntityManagerCreator;
+import core.framework.jpa.support.AbstractEntityManagerCreator;
 import org.hibernate.ogm.OgmSession;
 
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * @author ebin
  */
-public class HibernateOGMEntityManagerCreator extends EntityManagerCreator {
+public class HibernateOGMEntityManagerCreator extends AbstractEntityManagerCreator {
 
     @Override
     protected Class<?>[] customizeInterfaces(Class<?>[] interfaces) {

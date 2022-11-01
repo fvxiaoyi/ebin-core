@@ -3,8 +3,6 @@ package core.framework.jpa.mongodb.configuration;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 /**

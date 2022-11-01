@@ -14,13 +14,10 @@ import javax.persistence.EntityManager;
  * @author ebin
  */
 public class ExtendedEntityManagerSynchronization extends ResourceHolderSynchronization<EntityManagerHolder, EntityManager> implements Ordered {
-
+    public volatile boolean closeOnCompletion;
     private final EntityManager entityManager;
-
     @Nullable
     private final PersistenceExceptionTranslator exceptionTranslator;
-
-    public volatile boolean closeOnCompletion;
 
     public ExtendedEntityManagerSynchronization(
             EntityManager em, @Nullable PersistenceExceptionTranslator exceptionTranslator) {
@@ -80,9 +77,9 @@ public class ExtendedEntityManagerSynchronization extends ResourceHolderSynchron
     }
 
     private RuntimeException convertException(RuntimeException ex) {
-        DataAccessException dae = (this.exceptionTranslator != null) ?
-                this.exceptionTranslator.translateExceptionIfPossible(ex) :
-                EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ex);
-        return (dae != null ? dae : ex);
+        DataAccessException dae = this.exceptionTranslator != null
+                ? this.exceptionTranslator.translateExceptionIfPossible(ex)
+                : EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ex);
+        return dae != null ? dae : ex;
     }
 }

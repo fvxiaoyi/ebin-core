@@ -10,9 +10,9 @@ import org.hibernate.service.spi.SessionFactoryServiceInitiator;
 /**
  * @author ebin
  */
-public class ReplaceNativeNoSqlQueryInterpreterInitiator implements SessionFactoryServiceInitiator<NativeQueryInterpreter> {
+public final class ReplaceNativeNoSqlQueryInterpreterInitiator implements SessionFactoryServiceInitiator<NativeQueryInterpreter> {
 
-    public static ReplaceNativeNoSqlQueryInterpreterInitiator INSTANCE = new ReplaceNativeNoSqlQueryInterpreterInitiator();
+    public static final ReplaceNativeNoSqlQueryInterpreterInitiator INSTANCE = new ReplaceNativeNoSqlQueryInterpreterInitiator();
 
     private ReplaceNativeNoSqlQueryInterpreterInitiator() {
     }

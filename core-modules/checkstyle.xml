@@ -35,7 +35,9 @@
         <module name="MissingSwitchDefault"/>
         <module name="MultipleVariableDeclarations"/>
         <module name="NestedForDepth"/>
-        <module name="NestedIfDepth"/>
+        <module name="NestedIfDepth">
+            <property name="max" value="3"/>
+        </module>
         <module name="NestedTryDepth"/>
         <module name="NoArrayTrailingComma"/>
         <module name="NoClone"/>
@@ -69,9 +71,6 @@
         <module name="RequireEmptyLineBeforeBlockTagGroup"/>
 
         <!--Metrics-->
-        <module name="CyclomaticComplexity">
-            <property name="max" value="7"/>
-        </module>
         <module name="JavaNCSS">
             <property name="methodMaximum" value="50"/>
             <property name="classMaximum" value="450"/>
@@ -111,14 +110,6 @@
         <module name="TypeName"/>
 
         <!--Size Violations-->
-        <module name="AnonInnerLength"/>
-        <!--        <module name="ExecutableStatementCount">-->
-        <!--            <property name="max" value="50"/>-->
-        <!--        </module>-->
-        <!--        <module name="MethodLength">-->
-        <!--            <property name="countEmpty" value="false"/>-->
-        <!--            <property name="max" value="50"/>-->
-        <!--        </module>-->
         <module name="ParameterNumber"/>
         <module name="RecordComponentNumber"/>
 

@@ -25,7 +25,7 @@ import static core.framework.jpa.mongodb.configuration.HibernateMongoDBConfigura
 @AutoConfigureAfter(QueryServiceConfiguration.class)
 @ConditionalOnBean(QueryParser.class)
 public class HibernateMongoDBQueryServiceConfiguration {
-    public final static String HIBERNATE_MONGODB_QUERY_SERVICE = "hibernateMongoDBQueryService";
+    public static final String HIBERNATE_MONGODB_QUERY_SERVICE = "hibernateMongoDBQueryService";
 
     @PersistenceContext(unitName = MONGODB_PERSISTENCE_UNIT_INFO_NAME)
     private EntityManager entityManager;

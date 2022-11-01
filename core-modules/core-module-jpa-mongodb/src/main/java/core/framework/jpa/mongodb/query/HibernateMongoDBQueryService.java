@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @author ebin
  */
 public class HibernateMongoDBQueryService extends AbstractQueryService {
-    private final String TOTAL_QUERY_NAME_SUFFIX = ".total";
+    private static final String TOTAL_QUERY_NAME_SUFFIX = ".total";
     private final EntityManager entityManager;
 
     public HibernateMongoDBQueryService(EntityManager entityManager, QueryParser queryParser) {

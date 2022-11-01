@@ -63,21 +63,21 @@ class ClassFileTransformerAdapter implements ClassFileTransformer {
                 byte[] transformed = this.classTransformer.transform(
                         loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
                 if (transformed != null && LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Transformer of class [" + this.classTransformer.getClass().getName() +
-                            "] transformed class [" + className + "]; bytes in=" +
-                            classfileBuffer.length + "; bytes out=" + transformed.length);
+                    LOGGER.debug("Transformer of class [" + this.classTransformer.getClass().getName()
+                            + "] transformed class [" + className + "]; bytes in="
+                            + classfileBuffer.length + "; bytes out=" + transformed.length);
                 }
                 return transformed;
             } catch (ClassCircularityError ex) {
                 if (LOGGER.isErrorEnabled()) {
-                    LOGGER.error("Circularity error while weaving class [" + className + "] with " +
-                            "transformer of class [" + this.classTransformer.getClass().getName() + "]", ex);
+                    LOGGER.error("Circularity error while weaving class [" + className + "] with "
+                            + "transformer of class [" + this.classTransformer.getClass().getName() + "]", ex);
                 }
                 throw new IllegalStateException("Failed to weave class [" + className + "]", ex);
             } catch (Throwable ex) {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn("Error weaving class [" + className + "] with transformer of class [" +
-                            this.classTransformer.getClass().getName() + "]", ex);
+                    LOGGER.warn("Error weaving class [" + className + "] with transformer of class ["
+                            + this.classTransformer.getClass().getName() + "]", ex);
                 }
                 // The exception will be ignored by the class loader, anyway...
                 throw new IllegalStateException("Could not weave class [" + className + "]", ex);

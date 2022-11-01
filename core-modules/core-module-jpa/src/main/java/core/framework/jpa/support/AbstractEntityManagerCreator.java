@@ -20,8 +20,8 @@ import java.util.Set;
 /**
  * @author ebin
  */
-public abstract class EntityManagerCreator {
-    private static final Map<Class<?>, Class<?>[]> cachedEntityManagerInterfaces = new ConcurrentReferenceHashMap<>(4);
+public abstract class AbstractEntityManagerCreator {
+    private static final Map<Class<?>, Class<?>[]> CACHED_ENTITY_MANAGER_INTERFACES = new ConcurrentReferenceHashMap<>(4);
 
     public EntityManager createApplicationManagedEntityManager(EntityManager rawEntityManager,
                                                                EntityManagerFactoryInfo emfInfo,
@@ -29,7 +29,7 @@ public abstract class EntityManagerCreator {
         Assert.notNull(emfInfo, "EntityManagerFactoryInfo must not be null");
         JpaDialect jpaDialect = emfInfo.getJpaDialect();
         PersistenceUnitInfo pui = emfInfo.getPersistenceUnitInfo();
-        Boolean jta = (pui != null ? pui.getTransactionType() == PersistenceUnitTransactionType.JTA : null);
+        Boolean jta = pui != null ? pui.getTransactionType() == PersistenceUnitTransactionType.JTA : null;
         return createProxy(rawEntityManager, emfInfo.getEntityManagerInterface(),
                 emfInfo.getBeanClassLoader(), jpaDialect, jta, synchronizedWithTransaction);
     }
@@ -44,14 +44,14 @@ public abstract class EntityManagerCreator {
         Class<?>[] interfaces;
 
         if (emIfc != null) {
-            interfaces = cachedEntityManagerInterfaces.computeIfAbsent(emIfc, key -> {
+            interfaces = CACHED_ENTITY_MANAGER_INTERFACES.computeIfAbsent(emIfc, key -> {
                 if (EntityManagerProxy.class.equals(key)) {
                     return new Class<?>[]{key};
                 }
                 return new Class<?>[]{key, EntityManagerProxy.class};
             });
         } else {
-            interfaces = cachedEntityManagerInterfaces.computeIfAbsent(rawEm.getClass(), key -> {
+            interfaces = CACHED_ENTITY_MANAGER_INTERFACES.computeIfAbsent(rawEm.getClass(), key -> {
                 Set<Class<?>> ifcs = new LinkedHashSet<>(ClassUtils.getAllInterfacesForClassAsSet(key, cl));
                 ifcs.add(EntityManagerProxy.class);
                 return ClassUtils.toClassArray(ifcs);
@@ -61,7 +61,7 @@ public abstract class EntityManagerCreator {
         interfaces = customizeInterfaces(interfaces);
 
         return (EntityManager) Proxy.newProxyInstance(
-                (cl != null ? cl : EntityManagerCreator.class.getClassLoader()),
+                cl != null ? cl : AbstractEntityManagerCreator.class.getClassLoader(),
                 interfaces,
                 new ExtendedEntityManagerInvocationHandler(
                         rawEm, exceptionTranslator, jta, false, synchronizedWithTransaction));

@@ -28,14 +28,14 @@ import java.util.Set;
  */
 public class ConfigurableEntityManagerFactoryBean extends AbstractEntityManagerFactoryBean {
     private PersistenceUnitInfo persistenceUnitInfo;
-    private EntityManagerCreator entityManagerCreator = new DefaultEntityManagerCreator();
+    private AbstractEntityManagerCreator entityManagerCreator = new DefaultEntityManagerCreator();
 
     public ConfigurableEntityManagerFactoryBean(PersistenceUnitInfo persistenceUnitInfo) {
         this.persistenceUnitInfo = persistenceUnitInfo;
         this.setPersistenceUnitName(persistenceUnitInfo.getPersistenceUnitName());
     }
 
-    public void setEntityManagerCreator(EntityManagerCreator entityManagerCreator) {
+    public void setEntityManagerCreator(AbstractEntityManagerCreator entityManagerCreator) {
         this.entityManagerCreator = entityManagerCreator;
     }
 
@@ -48,16 +48,16 @@ public class ConfigurableEntityManagerFactoryBean extends AbstractEntityManagerF
             String providerClassName = this.persistenceUnitInfo.getPersistenceProviderClassName();
             if (providerClassName == null) {
                 throw new IllegalArgumentException(
-                        "No PersistenceProvider specified in EntityManagerFactory configuration, " +
-                                "and chosen PersistenceUnitInfo does not specify a provider class name either");
+                        "No PersistenceProvider specified in EntityManagerFactory configuration, "
+                                + "and chosen PersistenceUnitInfo does not specify a provider class name either");
             }
             Class<?> providerClass = ClassUtils.resolveClassName(providerClassName, getBeanClassLoader());
             provider = (PersistenceProvider) BeanUtils.instantiateClass(providerClass);
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Building JPA container EntityManagerFactory for persistence unit '" +
-                    this.persistenceUnitInfo.getPersistenceUnitName() + "'");
+            logger.debug("Building JPA container EntityManagerFactory for persistence unit '"
+                    + this.persistenceUnitInfo.getPersistenceUnitName() + "'");
         }
 
         return provider.createContainerEntityManagerFactory(this.persistenceUnitInfo, getJpaPropertyMap());
@@ -77,22 +77,22 @@ public class ConfigurableEntityManagerFactoryBean extends AbstractEntityManagerF
             return (EntityManagerFactory) Proxy.newProxyInstance(getBeanClassLoader(),
                     ClassUtils.toClassArray(ifcs), new ManagedEntityManagerFactoryInvocationHandler(this));
         } catch (IllegalArgumentException ex) {
-            throw new IllegalStateException("Conflicting EntityManagerFactory interfaces - " +
-                    "consider specifying the 'jpaVendorAdapter' or 'entityManagerFactoryInterface' property " +
-                    "to select a specific EntityManagerFactory interface to proceed with", ex);
+            throw new IllegalStateException("Conflicting EntityManagerFactory interfaces - "
+                    + "consider specifying the 'jpaVendorAdapter' or 'entityManagerFactoryInterface' property "
+                    + "to select a specific EntityManagerFactory interface to proceed with", ex);
         }
     }
 
-    protected Object invokeProxyMethod(Method method, @Nullable Object[] args) throws Throwable {
+    protected Object invokeProxyMethod(Method method, @Nullable Object[] args) throws Exception {
         if (method.getDeclaringClass().isAssignableFrom(EntityManagerFactoryInfo.class)) {
             return method.invoke(this, args);
-        } else if (method.getName().equals("createEntityManager") && args != null && args.length > 0 &&
-                args[0] == SynchronizationType.SYNCHRONIZED) {
+        } else if (method.getName().equals("createEntityManager") && args != null && args.length > 0
+                && args[0] == SynchronizationType.SYNCHRONIZED) {
             // JPA 2.1's createEntityManager(SynchronizationType, Map)
             // Redirect to plain createEntityManager and add synchronization semantics through Spring proxy
-            EntityManager rawEntityManager = (args.length > 1 ?
-                    getNativeEntityManagerFactory().createEntityManager((Map<?, ?>) args[1]) :
-                    getNativeEntityManagerFactory().createEntityManager());
+            EntityManager rawEntityManager = args.length > 1
+                    ? getNativeEntityManagerFactory().createEntityManager((Map<?, ?>) args[1])
+                    : getNativeEntityManagerFactory().createEntityManager();
             postProcessEntityManager(rawEntityManager);
             return entityManagerCreator.createApplicationManagedEntityManager(rawEntityManager, this, true);
         }
@@ -129,7 +129,7 @@ public class ConfigurableEntityManagerFactoryBean extends AbstractEntityManagerF
 
         private final ConfigurableEntityManagerFactoryBean entityManagerFactoryBean;
 
-        public ManagedEntityManagerFactoryInvocationHandler(ConfigurableEntityManagerFactoryBean emfb) {
+        ManagedEntityManagerFactoryInvocationHandler(ConfigurableEntityManagerFactoryBean emfb) {
             this.entityManagerFactoryBean = emfb;
         }
 
@@ -138,7 +138,7 @@ public class ConfigurableEntityManagerFactoryBean extends AbstractEntityManagerF
             switch (method.getName()) {
                 case "equals":
                     // Only consider equal when proxies are identical.
-                    return (proxy == args[0]);
+                    return proxy == args[0];
                 case "hashCode":
                     // Use hashCode of EntityManagerFactory proxy.
                     return System.identityHashCode(proxy);
@@ -150,6 +150,8 @@ public class ConfigurableEntityManagerFactoryBean extends AbstractEntityManagerF
                     } else if (targetClass.isInstance(proxy)) {
                         return proxy;
                     }
+                    break;
+                default:
                     break;
             }
 

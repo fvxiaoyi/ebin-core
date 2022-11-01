@@ -1,9 +1,0 @@
-<!DOCTYPE import-control PUBLIC
-        "-//Checkstyle//DTD ImportControl Configuration 1.4//EN"
-        "https://checkstyle.org/dtds/import_control_1_4.dtd">
-
-<import-control pkg=".*\.domain\.?" regex="true" strategyOnMismatch="allowed">
-    <disallow pkg=".*\.infrastructure.*" regex="true"/>
-    <disallow pkg=".*\.interfaces.*" regex="true"/>
-    <disallow pkg=".*\.application.*" regex="true"/>
-</import-control>

@@ -25,7 +25,7 @@ import static com.framework.jpa.mysql.configuration.HibernateMysqlConfiguration.
 @AutoConfigureAfter(QueryServiceConfiguration.class)
 @ConditionalOnBean(QueryParser.class)
 public class HibernateMysqlQueryServiceConfiguration {
-    public final static String HIBERNATE_MYSQL_QUERY_SERVICE = "hibernateMysqlQueryService";
+    public static final String HIBERNATE_MYSQL_QUERY_SERVICE = "hibernateMysqlQueryService";
 
     @PersistenceContext(unitName = MYSQL_PERSISTENCE_UNIT_INFO_NAME)
     private EntityManager entityManager;

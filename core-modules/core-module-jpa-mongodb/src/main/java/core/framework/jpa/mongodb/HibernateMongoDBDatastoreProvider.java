@@ -20,14 +20,14 @@ import java.util.List;
  * @author ebin
  */
 public class HibernateMongoDBDatastoreProvider extends MongoDBDatastoreProvider {
-    private static final Log log = LoggerFactory.make(MethodHandles.lookup());
+    private static final Log LOG = LoggerFactory.make(MethodHandles.lookup());
 
     @Override
     protected MongoClient createMongoClient(MongoDBConfiguration config) {
         MongoClientOptions clientOptions = config.buildOptions();
         clientOptions = mergeMongoClientOptions(clientOptions);
         List<MongoCredential> credentials = config.buildCredentials();
-        log.connectingToMongo(config.getHosts().toString(), clientOptions.getConnectTimeout());
+        LOG.connectingToMongo(config.getHosts().toString(), clientOptions.getConnectTimeout());
         try {
             List<ServerAddress> serverAddresses = new ArrayList<>(config.getHosts().size());
             for (Hosts.HostAndPort hostAndPort : config.getHosts()) {
@@ -37,7 +37,7 @@ public class HibernateMongoDBDatastoreProvider extends MongoDBDatastoreProvider 
                     ? new MongoClient(serverAddresses, clientOptions)
                     : new MongoClient(serverAddresses, credentials, clientOptions);
         } catch (RuntimeException e) {
-            throw log.unableToInitializeMongoDB(e);
+            throw LOG.unableToInitializeMongoDB(e);
         }
     }
 

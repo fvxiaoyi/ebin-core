@@ -37,10 +37,10 @@ import java.util.Properties;
 @ConditionalOnProperty(prefix = "spring.jpa.mongodb", name = "host")
 @EnableConfigurationProperties({HibernateJPAProperties.class, HibernateMongoDBProperties.class})
 public class HibernateMongoDBConfiguration {
-    public final static String MONGODB_PERSISTENCE_UNIT_INFO_NAME = "mongodb";
-    public final static String MONGODB_PERSISTENCE_UNIT_INFO_BEAN_NAME = "mongodbPersistenceUnitInfo";
-    public final static String MONGODB_ENTITY_MANAGER_FACTORY_BEAN_NAME = "mongodbEntityManagerFactory";
-    public final static String MONGODB_TRANSACTION_MANAGER_BEAN_NAME = "mongodbTransactionManager";
+    public static final String MONGODB_PERSISTENCE_UNIT_INFO_NAME = "mongodb";
+    public static final String MONGODB_PERSISTENCE_UNIT_INFO_BEAN_NAME = "mongodbPersistenceUnitInfo";
+    public static final String MONGODB_ENTITY_MANAGER_FACTORY_BEAN_NAME = "mongodbEntityManagerFactory";
+    public static final String MONGODB_TRANSACTION_MANAGER_BEAN_NAME = "mongodbTransactionManager";
     private final HibernateMongoDBProperties jpaMongodbProperties;
     private final HibernateJPAProperties hibernateJPAProperties;
 

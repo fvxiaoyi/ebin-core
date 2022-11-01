@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * @author ebin
  */
 public class ExtendClassLoaderServiceImpl implements ClassLoaderService {
-    private static final CoreMessageLogger log = CoreLogging.messageLogger(ClassLoaderServiceImpl.class);
+    private static final CoreMessageLogger LOG = CoreLogging.messageLogger(ClassLoaderServiceImpl.class);
 
     private final ConcurrentMap<Class, ServiceLoader> serviceLoaders = new ConcurrentHashMap<Class, ServiceLoader>();
     private volatile AggregatedClassLoader aggregatedClassLoader;
@@ -135,7 +135,154 @@ public class ExtendClassLoaderServiceImpl implements ClassLoaderService {
         }
     }
 
-    private static class AggregatedClassLoader extends ClassLoader {
+    @Override
+    @SuppressWarnings({"unchecked"})
+    public <T> Class<T> classForName(String className) {
+        try {
+            return (Class<T>) Class.forName(className, true, getAggregatedClassLoader());
+        } catch (Exception e) {
+            throw new ClassLoadingException("Unable to load class [" + className + "]", e);
+        } catch (LinkageError e) {
+            throw new ClassLoadingException("Unable to load class [" + className + "]", e);
+        }
+    }
+
+    @Override
+    public URL locateResource(String name) {
+        // first we try name as a URL
+        try {
+            return new URL(name);
+        } catch (Exception ignore) {
+        }
+
+        try {
+            final URL url = getAggregatedClassLoader().getResource(name);
+            if (url != null) {
+                return url;
+            }
+        } catch (Exception ignore) {
+        }
+
+        if (name.startsWith("/")) {
+            String substringName = name.substring(1);
+
+            try {
+                final URL url = getAggregatedClassLoader().getResource(substringName);
+                if (url != null) {
+                    return url;
+                }
+            } catch (Exception ignore) {
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public InputStream locateResourceStream(String name) {
+        // first we try name as a URL
+        try {
+            LOG.tracef("trying via [new URL(\"%s\")]", name);
+            return new URL(name).openStream();
+        } catch (Exception ignore) {
+        }
+
+        try {
+            LOG.tracef("trying via [ClassLoader.getResourceAsStream(\"%s\")]", name);
+            final InputStream stream = getAggregatedClassLoader().getResourceAsStream(name);
+            if (stream != null) {
+                return stream;
+            }
+        } catch (Exception ignore) {
+        }
+
+        final String stripped = name.startsWith("/") ? name.substring(1) : null;
+
+        if (stripped != null) {
+            try {
+                LOG.tracef("trying via [new URL(\"%s\")]", stripped);
+                return new URL(stripped).openStream();
+            } catch (Exception ignore) {
+            }
+
+            try {
+                LOG.tracef("trying via [ClassLoader.getResourceAsStream(\"%s\")]", stripped);
+                final InputStream stream = getAggregatedClassLoader().getResourceAsStream(stripped);
+                if (stream != null) {
+                    return stream;
+                }
+            } catch (Exception ignore) {
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<URL> locateResources(String name) {
+        final ArrayList<URL> urls = new ArrayList<URL>();
+        try {
+            final Enumeration<URL> urlEnumeration = getAggregatedClassLoader().getResources(name);
+            if (urlEnumeration != null && urlEnumeration.hasMoreElements()) {
+                while (urlEnumeration.hasMoreElements()) {
+                    urls.add(urlEnumeration.nextElement());
+                }
+            }
+        } catch (Exception ignore) {
+        }
+
+        return urls;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <S> Collection<S> loadJavaServices(Class<S> serviceContract) {
+        ServiceLoader<S> serviceLoader = serviceLoaders.get(serviceContract);
+        if (serviceLoader == null) {
+            serviceLoader = ServiceLoader.load(serviceContract, getAggregatedClassLoader());
+            serviceLoaders.put(serviceContract, serviceLoader);
+        }
+        final LinkedHashSet<S> services = new LinkedHashSet<S>();
+        for (S service : serviceLoader) {
+            services.add(service);
+        }
+        return services;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T generateProxy(InvocationHandler handler, Class... interfaces) {
+        return (T) Proxy.newProxyInstance(
+                getAggregatedClassLoader(),
+                interfaces,
+                handler
+        );
+    }
+
+    @Override
+    public <T> T workWithClassLoader(Work<T> work) {
+        return work.doWork(getAggregatedClassLoader());
+    }
+
+    private ClassLoader getAggregatedClassLoader() {
+        final AggregatedClassLoader aggregated = this.aggregatedClassLoader;
+        if (aggregated == null) {
+            throw LOG.usingStoppedClassLoaderService();
+        }
+        return aggregated;
+    }
+
+    @Override
+    public void stop() {
+        for (ServiceLoader serviceLoader : serviceLoaders.values()) {
+            serviceLoader.reload(); // clear service loader providers
+        }
+        serviceLoaders.clear();
+        //Avoid ClassLoader leaks
+        this.aggregatedClassLoader = null;
+    }
+
+    private static final class AggregatedClassLoader extends ClassLoader {
         private final ClassLoader[] individualClassLoaders;
         private final TcclLookupPrecedence tcclLookupPrecedence;
 
@@ -161,9 +308,9 @@ public class ExtendClassLoaderServiceImpl implements ClassLoaderService {
         private Iterator<ClassLoader> newTcclBeforeIterator(final ClassLoader threadContextClassLoader) {
             final ClassLoader systemClassLoader = locateSystemClassLoader();
             return new Iterator<ClassLoader>() {
-                private int currentIndex = 0;
-                private boolean tcCLReturned = false;
-                private boolean sysCLReturned = false;
+                private int currentIndex;
+                private boolean tcCLReturned;
+                private boolean sysCLReturned;
 
                 @Override
                 public boolean hasNext() {
@@ -198,9 +345,9 @@ public class ExtendClassLoaderServiceImpl implements ClassLoaderService {
         private Iterator<ClassLoader> newTcclAfterIterator(final ClassLoader threadContextClassLoader) {
             final ClassLoader systemClassLoader = locateSystemClassLoader();
             return new Iterator<ClassLoader>() {
-                private int currentIndex = 0;
-                private boolean tcCLReturned = false;
-                private boolean sysCLReturned = false;
+                private int currentIndex;
+                private boolean tcCLReturned;
+                private boolean sysCLReturned;
 
                 @Override
                 public boolean hasNext() {
@@ -235,8 +382,8 @@ public class ExtendClassLoaderServiceImpl implements ClassLoaderService {
         private Iterator<ClassLoader> newTcclNeverIterator() {
             final ClassLoader systemClassLoader = locateSystemClassLoader();
             return new Iterator<ClassLoader>() {
-                private int currentIndex = 0;
-                private boolean sysCLReturned = false;
+                private int currentIndex;
+                private boolean sysCLReturned;
 
                 @Override
                 public boolean hasNext() {
@@ -320,152 +467,5 @@ public class ExtendClassLoaderServiceImpl implements ClassLoaderService {
             throw new ClassNotFoundException("Could not load requested class : " + name);
         }
 
-    }
-
-    @Override
-    @SuppressWarnings({"unchecked"})
-    public <T> Class<T> classForName(String className) {
-        try {
-            return (Class<T>) Class.forName(className, true, getAggregatedClassLoader());
-        } catch (Exception e) {
-            throw new ClassLoadingException("Unable to load class [" + className + "]", e);
-        } catch (LinkageError e) {
-            throw new ClassLoadingException("Unable to load class [" + className + "]", e);
-        }
-    }
-
-    @Override
-    public URL locateResource(String name) {
-        // first we try name as a URL
-        try {
-            return new URL(name);
-        } catch (Exception ignore) {
-        }
-
-        try {
-            final URL url = getAggregatedClassLoader().getResource(name);
-            if (url != null) {
-                return url;
-            }
-        } catch (Exception ignore) {
-        }
-
-        if (name.startsWith("/")) {
-            name = name.substring(1);
-
-            try {
-                final URL url = getAggregatedClassLoader().getResource(name);
-                if (url != null) {
-                    return url;
-                }
-            } catch (Exception ignore) {
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public InputStream locateResourceStream(String name) {
-        // first we try name as a URL
-        try {
-            log.tracef("trying via [new URL(\"%s\")]", name);
-            return new URL(name).openStream();
-        } catch (Exception ignore) {
-        }
-
-        try {
-            log.tracef("trying via [ClassLoader.getResourceAsStream(\"%s\")]", name);
-            final InputStream stream = getAggregatedClassLoader().getResourceAsStream(name);
-            if (stream != null) {
-                return stream;
-            }
-        } catch (Exception ignore) {
-        }
-
-        final String stripped = name.startsWith("/") ? name.substring(1) : null;
-
-        if (stripped != null) {
-            try {
-                log.tracef("trying via [new URL(\"%s\")]", stripped);
-                return new URL(stripped).openStream();
-            } catch (Exception ignore) {
-            }
-
-            try {
-                log.tracef("trying via [ClassLoader.getResourceAsStream(\"%s\")]", stripped);
-                final InputStream stream = getAggregatedClassLoader().getResourceAsStream(stripped);
-                if (stream != null) {
-                    return stream;
-                }
-            } catch (Exception ignore) {
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public List<URL> locateResources(String name) {
-        final ArrayList<URL> urls = new ArrayList<URL>();
-        try {
-            final Enumeration<URL> urlEnumeration = getAggregatedClassLoader().getResources(name);
-            if (urlEnumeration != null && urlEnumeration.hasMoreElements()) {
-                while (urlEnumeration.hasMoreElements()) {
-                    urls.add(urlEnumeration.nextElement());
-                }
-            }
-        } catch (Exception ignore) {
-        }
-
-        return urls;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <S> Collection<S> loadJavaServices(Class<S> serviceContract) {
-        ServiceLoader<S> serviceLoader = serviceLoaders.get(serviceContract);
-        if (serviceLoader == null) {
-            serviceLoader = ServiceLoader.load(serviceContract, getAggregatedClassLoader());
-            serviceLoaders.put(serviceContract, serviceLoader);
-        }
-        final LinkedHashSet<S> services = new LinkedHashSet<S>();
-        for (S service : serviceLoader) {
-            services.add(service);
-        }
-        return services;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T generateProxy(InvocationHandler handler, Class... interfaces) {
-        return (T) Proxy.newProxyInstance(
-                getAggregatedClassLoader(),
-                interfaces,
-                handler
-        );
-    }
-
-    @Override
-    public <T> T workWithClassLoader(Work<T> work) {
-        return work.doWork(getAggregatedClassLoader());
-    }
-
-    private ClassLoader getAggregatedClassLoader() {
-        final AggregatedClassLoader aggregated = this.aggregatedClassLoader;
-        if (aggregated == null) {
-            throw log.usingStoppedClassLoaderService();
-        }
-        return aggregated;
-    }
-
-    @Override
-    public void stop() {
-        for (ServiceLoader serviceLoader : serviceLoaders.values()) {
-            serviceLoader.reload(); // clear service loader providers
-        }
-        serviceLoaders.clear();
-        //Avoid ClassLoader leaks
-        this.aggregatedClassLoader = null;
     }
 }
