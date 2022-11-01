@@ -1,0 +1,15 @@
+name: framework-parent
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'core-modules/core-modules-ddd-checkstyle/**'
+      - '.github/workflows/core-modules-ddd-checkstyle.yml'
+
+jobs:
+  call-workflow:
+    uses: ./.github/workflows/maven-build.yml
+    with:
+      work-dir: core-modules-ddd-checkstyle
+    secrets: inherit
