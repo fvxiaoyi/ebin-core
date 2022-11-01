@@ -16,3 +16,4 @@ jobs:
     uses: ./.github/workflows/maven-build.yml
     with:
       work-dir: core-parent
+    secrets: inherit
