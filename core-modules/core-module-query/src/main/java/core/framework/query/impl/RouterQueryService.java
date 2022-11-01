@@ -18,12 +18,12 @@ public class RouterQueryService implements QueryService {
     protected final QueryParser queryParser;
     protected Map<QueryType, QueryService> queryServices = new HashMap<>();
 
-    public void addQueryService(QueryType queryType, QueryService queryService) {
-        queryServices.put(queryType, queryService);
-    }
-
     public RouterQueryService(QueryParser queryParser) {
         this.queryParser = queryParser;
+    }
+
+    public void addQueryService(QueryType queryType, QueryService queryService) {
+        queryServices.put(queryType, queryService);
     }
 
     @Override

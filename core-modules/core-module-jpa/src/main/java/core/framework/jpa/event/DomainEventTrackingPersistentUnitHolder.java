@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author ebin
  */
-public class DomainEventTrackingPersistentUnitHolder {
+public final class DomainEventTrackingPersistentUnitHolder {
     public static final DomainEventTrackingPersistentUnitHolder INSTANCE = new DomainEventTrackingPersistentUnitHolder();
 
     private Map<String, EntityManager> entityManagers;
@@ -25,7 +25,7 @@ public class DomainEventTrackingPersistentUnitHolder {
     private DomainEventTrackingPersistentUnitHolder() {
     }
 
-    protected void setDomainEventTrackingAdaptors(Collection<DomainEventTrackingAdaptor> domainEventTrackingAdaptors) {
+    void setDomainEventTrackingAdaptors(Collection<DomainEventTrackingAdaptor> domainEventTrackingAdaptors) {
         this.domainEventTrackingAdaptors = new ArrayList<>(domainEventTrackingAdaptors);
     }
 

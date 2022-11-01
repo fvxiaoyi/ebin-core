@@ -13,7 +13,10 @@ import java.util.List;
 /**
  * @author ebin
  */
-public class ExtendCodecRegistry {
+public final class ExtendCodecRegistry {
+    private ExtendCodecRegistry() {
+    }
+
     public static CodecRegistry codecRegistry() {
         List<Codec<?>> codecs = new ArrayList<>(3);
         codecs.add(new LocalDateTimeCodec());

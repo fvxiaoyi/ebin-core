@@ -16,7 +16,7 @@ import java.time.ZoneId;
 /**
  * @author ebin
  */
-public class LocalDateTimeCodec  implements Codec<LocalDateTime> {
+public class LocalDateTimeCodec implements Codec<LocalDateTime> {
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeCodec.class);
 
     static void write(BsonWriter writer, LocalDateTime value) {

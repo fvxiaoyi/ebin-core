@@ -36,11 +36,11 @@ import java.security.ProtectionDomain;
  * @since 2.0
  */
 class ClassFileTransformerAdapter implements ClassFileTransformer {
-    private static final Log logger = LogFactory.getLog(ClassFileTransformerAdapter.class);
+    private static final Log LOGGER = LogFactory.getLog(ClassFileTransformerAdapter.class);
     private final ClassTransformer classTransformer;
-    private boolean currentlyTransforming = false;
+    private boolean currentlyTransforming;
 
-    public ClassFileTransformerAdapter(ClassTransformer classTransformer) {
+    ClassFileTransformerAdapter(ClassTransformer classTransformer) {
         Assert.notNull(classTransformer, "ClassTransformer must not be null");
         this.classTransformer = classTransformer;
     }
@@ -62,21 +62,21 @@ class ClassFileTransformerAdapter implements ClassFileTransformer {
             try {
                 byte[] transformed = this.classTransformer.transform(
                         loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
-                if (transformed != null && logger.isDebugEnabled()) {
-                    logger.debug("Transformer of class [" + this.classTransformer.getClass().getName() +
+                if (transformed != null && LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Transformer of class [" + this.classTransformer.getClass().getName() +
                             "] transformed class [" + className + "]; bytes in=" +
                             classfileBuffer.length + "; bytes out=" + transformed.length);
                 }
                 return transformed;
             } catch (ClassCircularityError ex) {
-                if (logger.isErrorEnabled()) {
-                    logger.error("Circularity error while weaving class [" + className + "] with " +
+                if (LOGGER.isErrorEnabled()) {
+                    LOGGER.error("Circularity error while weaving class [" + className + "] with " +
                             "transformer of class [" + this.classTransformer.getClass().getName() + "]", ex);
                 }
                 throw new IllegalStateException("Failed to weave class [" + className + "]", ex);
             } catch (Throwable ex) {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("Error weaving class [" + className + "] with transformer of class [" +
+                if (LOGGER.isWarnEnabled()) {
+                    LOGGER.warn("Error weaving class [" + className + "] with transformer of class [" +
                             this.classTransformer.getClass().getName() + "]", ex);
                 }
                 // The exception will be ignored by the class loader, anyway...

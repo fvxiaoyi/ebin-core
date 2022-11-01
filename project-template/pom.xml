@@ -65,6 +65,19 @@
                 <version>3.2.0</version>
             </plugin>
             <plugin>
+                <groupId>core.framework</groupId>
+                <artifactId>ddd-checkstyle-additional-plugin</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>ddd-checkstyle-file</id>
+                        <goals>
+                            <goal>ddd-checkstyle-file</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.2</version>
@@ -86,7 +99,7 @@
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
-                    <propertyExpansion>config_loc=${main.basedir}/.mvn/check/</propertyExpansion>
+                    <propertyExpansion>config_loc=${build.directory}</propertyExpansion>
                 </configuration>
                 <executions>
                     <execution>

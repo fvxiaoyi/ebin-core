@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
  * @author ebin
  */
 public class MyBatisQueryParser implements InitializingBean, QueryParser {
+    private static final Pattern SELECT_SQL_PATTERN = Pattern.compile(".*(select|SELECT).*(from|FROM)\\s+.*(where|WHERE)?.*");
     private final Logger logger = LoggerFactory.getLogger(MyBatisQueryParser.class);
-    private final static Pattern SELECT_SQL_PATTERN = Pattern.compile(".*(select|SELECT).*(from|FROM)\\s+.*(where|WHERE)?.*");
     private Map<String, QueryType> queryTypes;
     private Configuration configuration;
 
@@ -39,7 +39,7 @@ public class MyBatisQueryParser implements InitializingBean, QueryParser {
                 throw e;
             }
         } else {
-            throw new RuntimeException("Query statment: [" + queryName + "] not found");
+            throw new RuntimeException("Query statement: [" + queryName + "] not found");
         }
     }
 
@@ -59,7 +59,7 @@ public class MyBatisQueryParser implements InitializingBean, QueryParser {
     public QueryType getQueryType(String queryName) {
         QueryType queryType = queryTypes.get(queryName);
         if (queryType == null) {
-            throw new RuntimeException("Query statment: [" + queryName + "] not found");
+            throw new RuntimeException("Query statement: [\" + queryName + \"] not found");
         }
         return queryType;
     }
