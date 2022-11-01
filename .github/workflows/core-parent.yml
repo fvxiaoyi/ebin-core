@@ -7,6 +7,10 @@ on:
       - 'core-parent/**'
       - '.github/workflows/core-parent.yml'
 
+env:
+  GITHUB_ACTOR: fvxiaoyi
+  GITHUB_TOKEN: ${{ secrets.MAVEN_SERVER_TOKEN }}
+
 jobs:
   call-workflow:
     uses: ./.github/workflows/maven-build.yml
