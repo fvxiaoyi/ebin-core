@@ -7,10 +7,6 @@ on:
         required: true
         type: string
 
-env:
-  GITHUB_ACTOR: fvxiaoyi
-  GITHUB_TOKEN: ${{ secrets.MAVEN_SERVER_TOKEN }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
