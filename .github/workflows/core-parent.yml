@@ -5,11 +5,17 @@ on:
     branches: [ "main" ]
     paths:
       - 'core-parent/**'
+      - 'core-modules/**'
       - '.github/workflows/core-parent.yml'
 
 jobs:
-  call-workflow:
+  build-parent:
     uses: ./.github/workflows/maven-build.yml
     with:
       work-dir: core-parent
+    secrets: inherit
+  build-modules:
+    uses: ./.github/workflows/maven-build.yml
+    with:
+      work-dir: core-modules
     secrets: inherit
