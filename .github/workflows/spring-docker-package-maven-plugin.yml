@@ -8,7 +8,7 @@ on:
       - '.github/workflows/spring-docker-package-maven-plugin.yml'
 
 jobs:
-  build-modules:
+  build-plugin:
     uses: ./.github/workflows/maven-build.yml
     with:
       work-dir: tools/spring-docker-package-maven-plugin
