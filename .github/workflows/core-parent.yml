@@ -1,4 +1,4 @@
-name: framework-parent
+name: build ebin-core
 
 on:
   push:
@@ -13,9 +13,11 @@ jobs:
     uses: ./.github/workflows/maven-build.yml
     with:
       work-dir: core-parent
+      jdk: 16.0.2+7
     secrets: inherit
   build-modules:
     uses: ./.github/workflows/maven-build.yml
     with:
       work-dir: core-modules
+      jdk: 16.0.2+7
     secrets: inherit

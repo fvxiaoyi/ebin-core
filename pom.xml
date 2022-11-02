@@ -12,8 +12,8 @@
         <module>core-parent</module>
         <module>core-modules</module>
         <module>project-template</module>
-        <module>tools/spring-docker-package-maven-plugin</module>
         <module>tools/alerting-service</module>
+        <module>tools/spring-docker-package-maven-plugin</module>
         <module>tools/ddd-checkstyle-additional-plugin</module>
     </modules>
 
