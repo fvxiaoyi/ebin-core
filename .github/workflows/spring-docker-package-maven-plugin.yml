@@ -1,4 +1,4 @@
-name: spring-docker-package-maven-plugin
+name: build spring-docker-package-maven-plugin
 
 on:
   push:

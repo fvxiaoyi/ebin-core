@@ -1,0 +1,16 @@
+name: build ddd-check-style-additional-plugin
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'tools/ddd-check-style-additional-plugin/**'
+      - '.github/workflows/ddd-check-style-additional-plugin.yml'
+
+jobs:
+  build-modules:
+    uses: ./.github/workflows/maven-build.yml
+    with:
+      work-dir: tools/ddd-check-style-additional-plugin
+      jdk: 11
+    secrets: inherit

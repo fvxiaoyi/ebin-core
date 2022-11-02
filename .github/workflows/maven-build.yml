@@ -1,4 +1,4 @@
-name: maven-build-with-jdk16
+name: maven-build
 
 on:
   workflow_call:
