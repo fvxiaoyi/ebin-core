@@ -51,6 +51,11 @@
             <version>${core.version}</version>
         </dependency>
         <dependency>
+            <groupId>core.framework</groupId>
+            <artifactId>core-module-jpa-mongodb</artifactId>
+            <version>${core.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>

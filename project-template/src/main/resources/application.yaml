@@ -4,19 +4,17 @@ spring:
   main:
     banner-mode: "off"
   datasource:
-    url: jdbc:mysql://192.168.137.1:3306/demo?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: root
-    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://192.168.136.128:30001/demo?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: demo
+    password: demo123
   jpa:
     common:
       basePackagePath: apps.example
     mysql:
       packagesToScan:
         - apps.example.*
-#  flyway:
-#    enabled: true
-#    baselineOnMigrate: true
-#sql-query:
-#  mapper-locations:
-#    - apps/bff/example/query/ExampleQuery.xml
+    mongodb:
+      host: 192.168.136.128:30002
+      database: demo
+      packagesToScan:
+        - apps.user.*
