@@ -1,5 +1,7 @@
 package core.framework.kafka.configuration;
 
+import core.framework.kafka.utils.Network;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
@@ -28,8 +30,9 @@ public class KafkaConfiguration {
     public DefaultKafkaConsumerFactoryCustomizer kafkaConsumerFactoryCustomizer() {
         return consumerFactory -> {
             Map<String, Object> config = new HashMap<>();
+            config.put(CommonClientConfigs.CLIENT_ID_CONFIG, Network.LOCAL_HOST_NAME);
+
             config.put(ConsumerConfig.GROUP_ID_CONFIG, environment.getProperty("spring.application.name"));
-            config.put(ConsumerConfig.CLIENT_ID_CONFIG, "");
             config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, Boolean.FALSE);
             config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");                      // refer to org.apache.kafka.clients.consumer.ConsumerConfig, must be in("latest", "earliest", "none")
             config.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 1_800_000);                  // 30min as max process time for each poll

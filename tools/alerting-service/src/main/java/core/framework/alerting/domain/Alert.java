@@ -55,4 +55,17 @@ public class Alert {
     public String getCreatedTime() {
         return createdTime.format(DateTimeFormatter.ISO_DATE);
     }
+
+    @Override
+    public String toString() {
+        return "Alert{" +
+                "app='" + app + '\'' +
+                ", action='" + action + '\'' +
+                ", errorCode='" + errorCode + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", traceId='" + traceId + '\'' +
+                ", spanId='" + spanId + '\'' +
+                ", createdTime=" + createdTime +
+                '}';
+    }
 }

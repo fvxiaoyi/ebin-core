@@ -1,6 +1,5 @@
-package core.framework.utils.slack;
+package core.framework.utils;
 
-import core.framework.alerting.domain.Alert;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

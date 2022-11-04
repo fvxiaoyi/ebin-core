@@ -36,7 +36,12 @@
         <dependencies>
             <dependency>
                 <groupId>core.framework</groupId>
-                <artifactId>core-module-ddd-structure</artifactId>
+                <artifactId>core-module-kafka</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>core.framework</groupId>
+                <artifactId>core-module-ddd-checkstyle</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

@@ -6,7 +6,7 @@ spring:
   kafka:
     consumer:
       bootstrapServers:
-        - 192.168.19.1:9092
+        - 192.168.136.128:30004
     listener:
       type: BATCH
       concurrency: 2
