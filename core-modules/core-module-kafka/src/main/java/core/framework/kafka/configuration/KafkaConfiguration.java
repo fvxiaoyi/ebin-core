@@ -1,10 +1,15 @@
 package core.framework.kafka.configuration;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author ebin
@@ -19,7 +24,7 @@ public class KafkaConfiguration {
     @Autowired
     Environment environment;
 
-   /* @Bean
+    @Bean
     public DefaultKafkaConsumerFactoryCustomizer kafkaConsumerFactoryCustomizer() {
         return consumerFactory -> {
             Map<String, Object> config = new HashMap<>();
@@ -36,5 +41,5 @@ public class KafkaConfiguration {
             config.put(ConsumerConfig.FETCH_MAX_WAIT_MS_CONFIG, (int) maxWaitTime.toMillis());
             consumerFactory.updateConfigs(config);
         };
-    }*/
+    }
 }
