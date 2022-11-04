@@ -16,6 +16,7 @@ jobs:
       jdk: 16.0.2+7
     secrets: inherit
   build-modules:
+    needs: build-parent
     uses: ./.github/workflows/maven-build.yml
     with:
       work-dir: core-modules
