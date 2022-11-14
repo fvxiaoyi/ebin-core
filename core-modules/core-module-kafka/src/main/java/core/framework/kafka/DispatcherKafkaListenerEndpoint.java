@@ -8,11 +8,11 @@ import org.springframework.kafka.support.converter.MessageConverter;
 /**
  * @author ebin
  */
-public class DispatchedKafkaListenerEndpoint extends AbstractKafkaListenerEndpoint<byte[], byte[]> {
+public class DispatcherKafkaListenerEndpoint extends AbstractKafkaListenerEndpoint<byte[], byte[]> {
 
     @Override
     protected MessagingMessageListenerAdapter<byte[], byte[]> createMessageListener(MessageListenerContainer container, MessageConverter messageConverter) {
-        DispatchedMessagingMessageListenerAdapter adapter = new DispatchedMessagingMessageListenerAdapter();
+        DispatcherMessagingMessageListenerAdapter adapter = new DispatcherMessagingMessageListenerAdapter();
         return adapter;
     }
 }

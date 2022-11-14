@@ -6,14 +6,18 @@ import java.util.Map;
 /**
  * @author ebin
  */
-public class MessageHandlerAdapterHolder {
-    private static final Map<String, MessageHandlerAdapter<?>> messageHandlers = new HashMap<>();
+public final class MessageHandlerAdapterHolder {
+    private static final Map<String, MessageHandlerAdapter<?>> MESSAGE_HANDLERS = new HashMap<>();
+
+    private MessageHandlerAdapterHolder() {
+    }
 
     public static synchronized void addMessageHandler(String topic, MessageHandlerAdapter<?> messageHandlerAdapter) {
-        messageHandlers.put(topic, messageHandlerAdapter);
+        MESSAGE_HANDLERS.put(topic, messageHandlerAdapter);
     }
 
     public static MessageHandlerAdapter<?> get(String topic) {
-        return messageHandlers.get(topic);
+        return MESSAGE_HANDLERS.get(topic);
     }
+
 }

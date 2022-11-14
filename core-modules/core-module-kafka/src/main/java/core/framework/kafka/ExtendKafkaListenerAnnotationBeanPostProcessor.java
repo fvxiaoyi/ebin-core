@@ -1,10 +1,10 @@
 package core.framework.kafka;
 
 import core.framework.kafka.annotation.KafkaMessageHandler;
+import core.framework.kafka.configuration.DispatcherKafkaListenerProperties;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -26,24 +26,20 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static core.framework.kafka.configuration.DispatcherKafkaListenerConfiguration.DISPATCHER_KAFKA_LISTENER_CONTAINER_FACTORY_NAME;
 import static org.springframework.kafka.annotation.KafkaListenerAnnotationBeanPostProcessor.DEFAULT_KAFKA_LISTENER_CONTAINER_FACTORY_BEAN_NAME;
 
 /**
  * @author ebin
  */
 public class ExtendKafkaListenerAnnotationBeanPostProcessor
-        implements BeanPostProcessor, Ordered, ApplicationContextAware, InitializingBean, SmartInitializingSingleton {
-    private static final String GENERATED_ID_PREFIX = "org.springframework.kafka.KafkaListenerEndpointContainer#";
+        implements BeanPostProcessor, Ordered, ApplicationContextAware, SmartInitializingSingleton {
+    private static final String GENERATED_ID_PREFIX = DispatcherKafkaListenerEndpoint.class.getName() + "Container#";
     private final AtomicInteger counter = new AtomicInteger();
     private final KafkaListenerEndpointRegistrar registrar = new KafkaListenerEndpointRegistrar();
     private ApplicationContext applicationContext;
     private BeanFactory beanFactory;
     private KafkaListenerEndpointRegistry endpointRegistry;
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-
-    }
 
     @Override
     public void afterSingletonsInstantiated() {
@@ -118,15 +114,16 @@ public class ExtendKafkaListenerAnnotationBeanPostProcessor
     }
 
     private void registerDispatchedKafkaListener() {
-        DispatchedKafkaListenerEndpoint endpoint = new DispatchedKafkaListenerEndpoint();
+        DispatcherKafkaListenerProperties properties = this.beanFactory.getBean(DispatcherKafkaListenerProperties.class);
+        DispatcherKafkaListenerEndpoint endpoint = new DispatcherKafkaListenerEndpoint();
         endpoint.setId(GENERATED_ID_PREFIX + this.counter.getAndIncrement());
-        endpoint.setTopics("otlp_spans");
-        endpoint.setConcurrency(3);
+        endpoint.setTopics(properties.getTopics().toArray(new String[]{}));
+        endpoint.setConcurrency(properties.getConcurrency());
         endpoint.setAutoStartup(true);
         endpoint.setSplitIterables(true);
         endpoint.setBatchListener(true);
 
-        KafkaListenerContainerFactory<?> listenerContainerFactory = (KafkaListenerContainerFactory<?>) this.beanFactory.getBean("kafkaListenerContainerFactory");
+        KafkaListenerContainerFactory<?> listenerContainerFactory = (KafkaListenerContainerFactory<?>) this.beanFactory.getBean(DISPATCHER_KAFKA_LISTENER_CONTAINER_FACTORY_NAME);
         this.registrar.registerEndpoint(endpoint, listenerContainerFactory);
         endpoint.setBeanFactory(this.beanFactory);
     }

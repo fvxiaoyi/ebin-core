@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-core.framework.kafka.configuration.KafkaConfiguration
+core.framework.kafka.configuration.KafkaConfiguration,\
+core.framework.kafka.configuration.DispatcherKafkaListenerConfiguration

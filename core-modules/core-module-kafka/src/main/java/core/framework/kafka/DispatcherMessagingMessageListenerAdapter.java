@@ -22,12 +22,12 @@ import java.util.Map;
 /**
  * @author ebin
  */
-public class DispatchedMessagingMessageListenerAdapter
+public class DispatcherMessagingMessageListenerAdapter
         extends BatchMessagingMessageListenerAdapter<byte[], byte[]>
         implements BatchAcknowledgingConsumerAwareMessageListener<byte[], byte[]> {
-    private static final Log LOGGER = LogFactory.getLog(DispatchedMessagingMessageListenerAdapter.class);
+    private static final Log LOGGER = LogFactory.getLog(DispatcherMessagingMessageListenerAdapter.class);
 
-    public DispatchedMessagingMessageListenerAdapter() {
+    public DispatcherMessagingMessageListenerAdapter() {
         super(null, null);
         setMessageConverter(new ByteArrayJsonMessageConverter(JSONMapper.OBJECT_MAPPER));
         setBatchMessageConverter(new BatchMessagingMessageConverter(getMessageConverter()));
@@ -37,13 +37,13 @@ public class DispatchedMessagingMessageListenerAdapter
     @Override
     public void onMessage(List<ConsumerRecord<byte[], byte[]>> kafkaRecords, Acknowledgment acknowledgment, Consumer<?, ?> consumer) {
         try {
-            Map<String, List<ConsumerRecord<byte[], byte[]>>> messages = new HashMap<>();     // record in one topic maintains order
-            for (ConsumerRecord<byte[], byte[]> record : kafkaRecords) {
-                messages.computeIfAbsent(record.topic(), key -> new ArrayList<>()).add(record);
+            Map<String, List<ConsumerRecord<?, ?>>> messages = new HashMap<>();     // record in one topic maintains order
+            for (ConsumerRecord<?, ?> kafkaRecord : kafkaRecords) {
+                messages.computeIfAbsent(kafkaRecord.topic(), key -> new ArrayList<>()).add(kafkaRecord);
             }
-            for (Map.Entry<String, List<ConsumerRecord<byte[], byte[]>>> entry : messages.entrySet()) {
+            for (Map.Entry<String, List<ConsumerRecord<?, ?>>> entry : messages.entrySet()) {
                 String topic = entry.getKey();
-                List<ConsumerRecord<byte[], byte[]>> records = entry.getValue();
+                List<ConsumerRecord<?, ?>> records = entry.getValue();
                 MessageHandlerAdapter<?> messageHandlerAdapter = MessageHandlerAdapterHolder.get(topic);
                 handle(messageHandlerAdapter, records, acknowledgment, consumer);
             }
@@ -53,7 +53,7 @@ public class DispatchedMessagingMessageListenerAdapter
     }
 
     <T> void handle(MessageHandlerAdapter<T> messageHandlerAdapter,
-                    List<ConsumerRecord<byte[], byte[]>> records,
+                    List<ConsumerRecord<?, ?>> records,
                     Acknowledgment acknowledgment,
                     Consumer<?, ?> consumer) {
         Message<T> message;
@@ -62,8 +62,8 @@ public class DispatchedMessagingMessageListenerAdapter
                 message = toBatchMessage(records, acknowledgment, consumer, messageHandlerAdapter.getMessageType());
                 messageHandlerAdapter.handle(message);
             } else {
-                for (ConsumerRecord<byte[], byte[]> record : records) {
-                    message = toMessage(record, acknowledgment, consumer, messageHandlerAdapter.getMessageType());
+                for (ConsumerRecord<?, ?> kafkaRecord : records) {
+                    message = toMessage(kafkaRecord, acknowledgment, consumer, messageHandlerAdapter.getMessageType());
                     messageHandlerAdapter.handle(message);
                 }
             }
@@ -72,17 +72,17 @@ public class DispatchedMessagingMessageListenerAdapter
         }
     }
 
-    <T> Message<T> toBatchMessage(List<ConsumerRecord<byte[], byte[]>> records,
+    <T> Message<T> toBatchMessage(List<ConsumerRecord<?, ?>> kafkaRecords,
                                   Acknowledgment acknowledgment,
                                   Consumer<?, ?> consumer,
                                   Type payloadType) {
-        return (Message<T>) getBatchMessageConverter().toMessage(Collections.unmodifiableList(records), acknowledgment, consumer, payloadType);
+        return (Message<T>) getBatchMessageConverter().toMessage(Collections.unmodifiableList(kafkaRecords), acknowledgment, consumer, payloadType);
     }
 
-    <T> Message<T> toMessage(ConsumerRecord<byte[], byte[]> record,
+    <T> Message<T> toMessage(ConsumerRecord<?, ?> kafkaRecord,
                              Acknowledgment acknowledgment,
                              Consumer<?, ?> consumer,
                              Type payloadType) {
-        return (Message<T>) getMessageConverter().toMessage(record, acknowledgment, consumer, payloadType);
+        return (Message<T>) getMessageConverter().toMessage(kafkaRecord, acknowledgment, consumer, payloadType);
     }
 }
