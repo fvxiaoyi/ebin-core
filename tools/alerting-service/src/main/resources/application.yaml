@@ -9,10 +9,6 @@ spring:
         - 192.168.136.128:30004
     listener:
       type: BATCH
-      ackMode: MANUAL_IMMEDIATE
-      concurrency: 2
-    dispatcher:
-      topics:
-        - otlp_spans
-        - test
-      concurrency: 5
+      concurrency: 1
+
+lokiHost: http://192.168.137.2:30100

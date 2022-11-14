@@ -4,7 +4,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "Oops, we got a new error, please fix it ASAP. You can find the kibana log *<%6$s| over here> !*"
+        "text": "Oops, we got a new error, please fix it ASAP. You can find the loki log *<%7$s| over here> !*"
       }
     },
     {
@@ -29,6 +29,10 @@
         {
           "type": "mrkdwn",
           "text": "*Error message:*\n %5$s"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*count:*\n %6$s"
         }
       ]
     },

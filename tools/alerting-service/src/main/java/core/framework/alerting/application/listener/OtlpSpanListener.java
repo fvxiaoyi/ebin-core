@@ -3,11 +3,9 @@ package core.framework.alerting.application.listener;
 import core.framework.alerting.application.service.BatchProcessAlertService;
 import core.framework.alerting.domain.Alert;
 import core.framework.alerting.domain.service.GetAlertMessageService;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
+import core.framework.json.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,9 +25,8 @@ public class OtlpSpanListener {
     private BatchProcessAlertService batchSendAlertService;
 
     @KafkaListener(topics = {"otlp_spans"})
-    public void handle(ConsumerRecords<String, String> records, Acknowledgment acknowledgment) {
-        System.out.println(records);
-        /*for (String message : messages) {
+    public void handle(List<String> messages) {
+        for (String message : messages) {
             Map<String, Object> map = JSON.fromJSON(Map.class, message);
             List<Map<String, Object>> resourceSpans = (List<Map<String, Object>>) map.get("resourceSpans");
             if (resourceSpans != null) {
@@ -42,7 +39,6 @@ public class OtlpSpanListener {
                 }
             }
         }
-        acknowledgment.acknowledge();*/
     }
 
     private String parseServiceName(Map<String, Object> resourceSpan) {

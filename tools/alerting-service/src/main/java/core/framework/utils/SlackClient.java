@@ -15,7 +15,8 @@ public class SlackClient {
 
     public static void send(String content) {
         Request.Builder builder = new Request.Builder();
-        builder.url("https://hooks.slack.com/services/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");
+        //TODO add to config
+        builder.url("https://hooks.slack.com/services/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");
         byte[] body = content.getBytes(UTF_8);
         builder.method("POST", RequestBody.create(body, MediaType.get("application/json")));
         try {
@@ -28,7 +29,7 @@ public class SlackClient {
     public static void main(String[] args) {
         String content = "{\"text\":\"Hello, World!\"}";
         Request.Builder builder = new Request.Builder();
-        builder.url("https://hooks.slack.com/services/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");
+        builder.url("https://hooks.slack.com/services/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");
         byte[] body = content.getBytes(UTF_8);
         builder.method("POST", RequestBody.create(body, MediaType.get("application/json")));
         try {

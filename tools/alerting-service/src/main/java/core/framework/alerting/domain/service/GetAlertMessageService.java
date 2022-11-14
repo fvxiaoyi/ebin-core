@@ -2,6 +2,7 @@ package core.framework.alerting.domain.service;
 
 import core.framework.alerting.domain.Alert;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +13,21 @@ import java.io.IOException;
  */
 @Service
 public class GetAlertMessageService implements InitializingBean {
-    String linkTpl = "http://192.168.137.2:30100/explore?left={\\\"datasource\\\":\\\"Loki\\\",\\\"queries\\\":[{\\\"refId\\\":\\\"A\\\",\\\"expr\\\":\\\"{app=\\\\\\\"%s\\\\\\\", trace_id=\\\\\\\"%s\\\\\\\"}\\\"}],\\\"range\\\":{\\\"from\\\":\\\"now-1h\\\",\\\"to\\\":\\\"now\\\"}}";
+    private final String linkTpl = "/explore?left={\\\"datasource\\\":\\\"Loki\\\",\\\"queries\\\":[{\\\"refId\\\":\\\"A\\\",\\\"expr\\\":\\\"{app=\\\\\\\"%s\\\\\\\", trace_id=\\\\\\\"%s\\\\\\\"}\\\"}],\\\"range\\\":{\\\"from\\\":\\\"now-1h\\\",\\\"to\\\":\\\"now\\\"}}";
+
+    @Value("${lokiHost}")
+    private String lokiHost;
     private String messageTemplate;
 
-    public String get(Alert alert) {
-        String link = String.format(linkTpl, alert.getApp(), alert.getTraceId());
+    public String get(Alert alert, int count) {
+        String link = String.format(lokiHost + linkTpl, alert.getApp(), alert.getTraceId());
         return String.format(messageTemplate,
                 alert.getApp(),
                 alert.getAction(),
                 alert.getErrorCode(),
                 alert.getFormatCreatedTime(),
                 alert.getErrorMessage(),
+                count,
                 link);
     }
 

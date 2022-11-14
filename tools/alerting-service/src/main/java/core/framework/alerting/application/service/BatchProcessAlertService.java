@@ -1,7 +1,11 @@
 package core.framework.alerting.application.service;
 
 import core.framework.alerting.domain.Alert;
+import core.framework.alerting.domain.service.GetAlertMessageService;
 import core.framework.utils.LRUCache;
+import core.framework.utils.SlackClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -16,15 +20,20 @@ public class BatchProcessAlertService {
     private static final LRUCache<String, AlertStat> CACHE = new LRUCache<>(1000);
     private int timespanInMinutes;
 
+    @Autowired
+    private GetAlertMessageService getAlertMessageService;
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
+
     public void process(List<Alert> alerts) {
         for (Alert alert : alerts) {
             String key = alertKey(alert);
             Result result;
             synchronized (CACHE) {
-                AlertStat stat = (AlertStat) CACHE.get(key);
+                AlertStat stat = CACHE.get(key);
                 if (stat == null) {
                     CACHE.put(key, new AlertStat(alert.getCreatedTime()));
-                    result = new Result(true, -1);
+                    result = new Result(true, 1);
                 } else if (Duration.between(stat.lastSentDate, alert.getCreatedTime()).toMinutes() >= timespanInMinutes) {
                     CACHE.put(key, new AlertStat(alert.getCreatedTime()));
                     result = new Result(true, stat.alertCountSinceLastSent);
@@ -40,8 +49,7 @@ public class BatchProcessAlertService {
     }
 
     private void doSend(Alert alert, int alertCountSinceLastSent) {
-        //todo send alert
-        System.out.println(alert);
+        taskExecutor.execute(() -> SlackClient.send(getAlertMessageService.get(alert, alertCountSinceLastSent)));
     }
 
     private String alertKey(Alert alert) {
