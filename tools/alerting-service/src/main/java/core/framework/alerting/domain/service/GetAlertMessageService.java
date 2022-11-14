@@ -21,7 +21,7 @@ public class GetAlertMessageService implements InitializingBean {
                 alert.getApp(),
                 alert.getAction(),
                 alert.getErrorCode(),
-                alert.getCreatedTime(),
+                alert.getFormatCreatedTime(),
                 alert.getErrorMessage(),
                 link);
     }

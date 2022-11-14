@@ -1,10 +1,13 @@
 package core.framework.alerting.application.listener;
 
+import core.framework.alerting.application.service.BatchProcessAlertService;
 import core.framework.alerting.domain.Alert;
 import core.framework.alerting.domain.service.GetAlertMessageService;
-import core.framework.json.JSON;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,21 +21,28 @@ import java.util.stream.Collectors;
 @Service
 public class OtlpSpanListener {
     @Autowired
-    GetAlertMessageService getAlertMessageService;
+    private GetAlertMessageService getAlertMessageService;
+
+    @Autowired
+    private BatchProcessAlertService batchSendAlertService;
 
     @KafkaListener(topics = {"otlp_spans"})
-    public void handle(String data) {
-        Map<String, Object> map = JSON.fromJSON(Map.class, data);
-        List<Map<String, Object>> resourceSpans = (List<Map<String, Object>>) map.get("resourceSpans");
-        if (resourceSpans != null) {
-            for (Map<String, Object> resourceSpan : resourceSpans) {
-                String serviceName = parseServiceName(resourceSpan);
-                List<Map<String, Object>> scopeSpans = (List<Map<String, Object>>) resourceSpan.get("scopeSpans");
-                if (serviceName != null && scopeSpans != null) {
-                    parseScopeSpans(serviceName, scopeSpans);
+    public void handle(ConsumerRecords<String, String> records, Acknowledgment acknowledgment) {
+        System.out.println(records);
+        /*for (String message : messages) {
+            Map<String, Object> map = JSON.fromJSON(Map.class, message);
+            List<Map<String, Object>> resourceSpans = (List<Map<String, Object>>) map.get("resourceSpans");
+            if (resourceSpans != null) {
+                for (Map<String, Object> resourceSpan : resourceSpans) {
+                    String serviceName = parseServiceName(resourceSpan);
+                    List<Map<String, Object>> scopeSpans = (List<Map<String, Object>>) resourceSpan.get("scopeSpans");
+                    if (serviceName != null && scopeSpans != null) {
+                        parseScopeSpans(serviceName, scopeSpans);
+                    }
                 }
             }
         }
+        acknowledgment.acknowledge();*/
     }
 
     private String parseServiceName(Map<String, Object> resourceSpan) {
@@ -96,7 +106,6 @@ public class OtlpSpanListener {
     }
 
     private void processAlert(List<Alert> alerts) {
-        // todo agg by action and error code and add count
-        alerts.forEach(System.out::println);
+        batchSendAlertService.process(alerts);
     }
 }

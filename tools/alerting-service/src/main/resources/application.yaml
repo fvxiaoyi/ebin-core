@@ -9,4 +9,5 @@ spring:
         - 192.168.136.128:30004
     listener:
       type: BATCH
+      ackMode: MANUAL_IMMEDIATE
       concurrency: 2

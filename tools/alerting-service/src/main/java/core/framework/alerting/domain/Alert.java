@@ -28,6 +28,10 @@ public class Alert {
         this.createdTime = LocalDateTime.now();
     }
 
+    public String getAlertKey() {
+        return this.getApp() + "/" + this.getAction() + "/" + this.getErrorCode();
+    }
+
     public String getApp() {
         return app;
     }
@@ -52,7 +56,11 @@ public class Alert {
         return spanId;
     }
 
-    public String getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
+    }
+
+    public String getFormatCreatedTime() {
         return createdTime.format(DateTimeFormatter.ISO_DATE);
     }
 
