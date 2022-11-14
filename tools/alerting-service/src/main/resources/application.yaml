@@ -11,7 +11,7 @@ spring:
       type: BATCH
       ackMode: MANUAL_IMMEDIATE
       concurrency: 2
-    dispatched:
+    dispatcher:
       topics:
         - otlp_spans
         - test

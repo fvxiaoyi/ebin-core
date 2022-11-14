@@ -18,7 +18,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
  * @author ebin
  */
 @Configuration
-@ConditionalOnProperty(prefix = "spring.kafka.dispatched", name = "topics")
+@ConditionalOnProperty(prefix = "spring.kafka.dispatcher", name = "topics")
 @Import(ExtendKafkaListenerConfigurationSelector.class)
 @EnableConfigurationProperties({DispatcherKafkaListenerProperties.class})
 public class DispatcherKafkaListenerConfiguration {
