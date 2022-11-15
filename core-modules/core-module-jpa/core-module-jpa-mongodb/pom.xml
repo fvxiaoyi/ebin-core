@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>core.framework</groupId>
-        <artifactId>core-modules</artifactId>
+        <artifactId>core-module-jpa</artifactId>
         <version>${revision}</version>
-        <relativePath>../../core-modules</relativePath>
+        <relativePath>../../core-module-jpa</relativePath>
     </parent>
 
     <artifactId>core-module-jpa-mongodb</artifactId>
@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>core.framework</groupId>
-            <artifactId>core-module-jpa</artifactId>
+            <artifactId>core-module-jpa-common</artifactId>
         </dependency>
         <dependency>
             <groupId>core.framework</groupId>

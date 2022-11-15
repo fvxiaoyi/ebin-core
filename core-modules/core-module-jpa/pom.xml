@@ -9,53 +9,12 @@
         <version>${revision}</version>
         <relativePath>../../core-modules</relativePath>
     </parent>
-
     <artifactId>core-module-jpa</artifactId>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>core.framework</groupId>
-            <artifactId>core-module-json</artifactId>
-        </dependency>
-        <dependency>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <groupId>org.hibernate.common</groupId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>hibernate-commons-annotations</artifactId>
-                    <groupId>org.hibernate.common</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>core-module-jpa-common</module>
+        <module>core-module-jpa-mongodb</module>
+        <module>core-module-jpa-mysql</module>
+    </modules>
 </project>
