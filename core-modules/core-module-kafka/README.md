@@ -7,6 +7,9 @@ However, it is not convenient to consume multiple topics on @KafkaListener, and 
 
 It is recommended to use DispatcherKafkaListener for projects that subscribe to multiple topics and have a small amount of data.
 
+DispatcherKafkaListener will subscribe to multiple topics and assign corresponding Messages to different KafkaMessageHandlers. All consumption exceptions will be caught, and the corresponding partition and offset will be logged to facilitate subsequent data recovery (kafka seek). DispatcherKafkaListener is completely independent from Spring's KafkaListener and will not affect each other's use.
+
+
 #### Example
 1.Turn on the enable config in the configuration file, such as:
 ~~~
