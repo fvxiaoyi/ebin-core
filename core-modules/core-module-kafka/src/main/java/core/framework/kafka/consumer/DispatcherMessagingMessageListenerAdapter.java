@@ -9,9 +9,9 @@ import org.springframework.kafka.listener.BatchAcknowledgingConsumerAwareMessage
 import org.springframework.kafka.listener.adapter.BatchMessagingMessageListenerAdapter;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.converter.BatchMessagingMessageConverter;
-import org.springframework.kafka.support.converter.ByteArrayJsonMessageConverter;
 import org.springframework.messaging.Message;
 
+import javax.validation.Validator;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +28,9 @@ public class DispatcherMessagingMessageListenerAdapter
         implements BatchAcknowledgingConsumerAwareMessageListener<byte[], byte[]> {
     private static final Log LOGGER = LogFactory.getLog(DispatcherMessagingMessageListenerAdapter.class);
 
-    public DispatcherMessagingMessageListenerAdapter() {
+    public DispatcherMessagingMessageListenerAdapter(Validator validator) {
         super(null, null);
-        setMessageConverter(new ByteArrayJsonMessageConverter(JSONMapper.OBJECT_MAPPER));
+        setMessageConverter(new ValidatedByteArrayJsonMessageConverter(JSONMapper.OBJECT_MAPPER, validator));
         setBatchMessageConverter(new BatchMessagingMessageConverter(getMessageConverter()));
     }
 

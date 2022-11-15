@@ -20,6 +20,7 @@ import org.springframework.kafka.config.KafkaListenerEndpointRegistrar;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.util.Assert;
 
+import javax.validation.Validator;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -115,7 +116,8 @@ public class ExtendKafkaListenerAnnotationBeanPostProcessor
 
     private void registerDispatchedKafkaListener() {
         DispatcherKafkaListenerProperties properties = this.beanFactory.getBean(DispatcherKafkaListenerProperties.class);
-        DispatcherKafkaListenerEndpoint endpoint = new DispatcherKafkaListenerEndpoint();
+        Validator validator = this.beanFactory.getBean(Validator.class);
+        DispatcherKafkaListenerEndpoint endpoint = new DispatcherKafkaListenerEndpoint(validator);
         endpoint.setId(GENERATED_ID_PREFIX + this.counter.getAndIncrement());
         endpoint.setTopics(properties.getTopics().toArray(new String[]{}));
         endpoint.setConcurrency(properties.getConcurrency());

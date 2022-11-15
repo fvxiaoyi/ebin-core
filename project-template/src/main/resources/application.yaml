@@ -3,6 +3,8 @@ server:
 spring:
   main:
     banner-mode: "off"
+  application:
+    name: project-template
   datasource:
     url: jdbc:mysql://192.168.136.128:30001/demo?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     username: demo
@@ -18,3 +20,11 @@ spring:
       database: demo
       packagesToScan:
         - apps.user.*
+  kafka:
+    consumer:
+      bootstrapServers:
+        - 192.168.136.128:30004
+    dispatcher:
+      enable: true
+      topics:
+        - example
