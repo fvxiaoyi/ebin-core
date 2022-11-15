@@ -5,38 +5,34 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SlackClient {
+    private static final Log LOGGER = LogFactory.getLog(SlackClient.class);
     public static OkHttpClient client = new OkHttpClient.Builder().build();
 
-    public static void send(String content) {
+    public static void send(String slackUrl, String content) {
         Request.Builder builder = new Request.Builder();
-        //TODO add to config
-        builder.url("https://hooks.slack.com/services/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");
-        byte[] body = content.getBytes(UTF_8);
-        builder.method("POST", RequestBody.create(body, MediaType.get("application/json")));
-        try {
-            client.newCall(builder.build()).execute();
-        } catch (IOException e) {
-
-        }
-    }
-
-    public static void main(String[] args) {
-        String content = "{\"text\":\"Hello, World!\"}";
-        Request.Builder builder = new Request.Builder();
-        builder.url("https://hooks.slack.com/services/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");
+        builder.url(slackUrl);
         byte[] body = content.getBytes(UTF_8);
         builder.method("POST", RequestBody.create(body, MediaType.get("application/json")));
         try {
             Response execute = client.newCall(builder.build()).execute();
-            System.out.println(execute.body().string());
+            Optional.ofNullable(execute.body()).ifPresent(responseBody -> {
+                try {
+                    LOGGER.info(responseBody.string());
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage());
+                }
+            });
         } catch (IOException e) {
-
+            LOGGER.error(e.getMessage());
         }
     }
 }

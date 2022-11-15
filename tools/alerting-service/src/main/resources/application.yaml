@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  main:
+    banner-mode: "off"
   application:
     name: alerting-service
   kafka:
@@ -12,3 +14,4 @@ spring:
       concurrency: 1
 
 lokiHost: http://192.168.137.2:30100
+slackUrl: https://hooks.slack.com/services/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

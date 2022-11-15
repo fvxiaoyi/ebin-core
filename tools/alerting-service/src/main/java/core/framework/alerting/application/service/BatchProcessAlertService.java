@@ -5,6 +5,7 @@ import core.framework.alerting.domain.service.GetAlertMessageService;
 import core.framework.utils.LRUCache;
 import core.framework.utils.SlackClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,8 @@ public class BatchProcessAlertService {
     private GetAlertMessageService getAlertMessageService;
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
+    @Value("${slackUrl}")
+    private String slackUrl;
 
     public void process(List<Alert> alerts) {
         for (Alert alert : alerts) {
@@ -49,7 +52,7 @@ public class BatchProcessAlertService {
     }
 
     private void doSend(Alert alert, int alertCountSinceLastSent) {
-        taskExecutor.execute(() -> SlackClient.send(getAlertMessageService.get(alert, alertCountSinceLastSent)));
+        taskExecutor.execute(() -> SlackClient.send(slackUrl, getAlertMessageService.get(alert, alertCountSinceLastSent)));
     }
 
     private String alertKey(Alert alert) {
