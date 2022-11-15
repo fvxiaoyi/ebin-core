@@ -1,4 +1,4 @@
-package core.framework.kafka;
+package core.framework.kafka.consumer;
 
 import org.springframework.context.annotation.DeferredImportSelector;
 import org.springframework.core.Ordered;

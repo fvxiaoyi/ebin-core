@@ -1,4 +1,4 @@
-package core.framework.kafka;
+package core.framework.kafka.consumer;
 
 import core.framework.kafka.annotation.KafkaMessageHandler;
 import core.framework.kafka.configuration.DispatcherKafkaListenerProperties;

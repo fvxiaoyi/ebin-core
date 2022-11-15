@@ -1,4 +1,4 @@
-package core.framework.kafka;
+package core.framework.kafka.consumer;
 
 import core.framework.json.JSONMapper;
 import org.apache.commons.logging.Log;
@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author ebin
@@ -57,18 +58,25 @@ public class DispatcherMessagingMessageListenerAdapter
                     Acknowledgment acknowledgment,
                     Consumer<?, ?> consumer) {
         Message<T> message;
-        try {
-            if (messageHandlerAdapter.isBatch()) {
+
+        if (messageHandlerAdapter.isBatch()) {
+            try {
                 message = toBatchMessage(records, acknowledgment, consumer, messageHandlerAdapter.getMessageType());
                 messageHandlerAdapter.handle(message);
-            } else {
-                for (ConsumerRecord<?, ?> kafkaRecord : records) {
+            } catch (Exception e) {
+                String partitions = records.stream().map(m -> String.valueOf(m.topic())).collect(Collectors.joining(","));
+                String offsets = records.stream().map(m -> String.valueOf(m.offset())).collect(Collectors.joining(","));
+                LOGGER.error("Batch message : " + messageHandlerAdapter.getTopic() + " - " + partitions + " - " + offsets + " are consume failed, error message : " + e.getMessage());
+            }
+        } else {
+            for (ConsumerRecord<?, ?> kafkaRecord : records) {
+                try {
                     message = toMessage(kafkaRecord, acknowledgment, consumer, messageHandlerAdapter.getMessageType());
                     messageHandlerAdapter.handle(message);
+                } catch (Exception e) {
+                    LOGGER.error("Message : " + kafkaRecord.topic() + " - " + kafkaRecord.partition() + " - " + kafkaRecord.offset() + " consume failed, error message : " + e.getMessage());
                 }
             }
-        } catch (Exception e) {
-            LOGGER.error(e);
         }
     }
 

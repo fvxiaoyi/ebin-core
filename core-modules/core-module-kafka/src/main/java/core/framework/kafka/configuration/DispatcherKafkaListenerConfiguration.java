@@ -1,6 +1,6 @@
 package core.framework.kafka.configuration;
 
-import core.framework.kafka.ExtendKafkaListenerConfigurationSelector;
+import core.framework.kafka.consumer.ExtendKafkaListenerConfigurationSelector;
 import core.framework.kafka.utils.Network;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
