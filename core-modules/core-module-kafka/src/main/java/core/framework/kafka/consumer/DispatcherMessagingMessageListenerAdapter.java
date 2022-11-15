@@ -57,8 +57,9 @@ public class DispatcherMessagingMessageListenerAdapter
                     List<ConsumerRecord<?, ?>> records,
                     Acknowledgment acknowledgment,
                     Consumer<?, ?> consumer) {
+        if (messageHandlerAdapter == null)
+            return;
         Message<T> message;
-
         if (messageHandlerAdapter.isBatch()) {
             try {
                 message = toBatchMessage(records, acknowledgment, consumer, messageHandlerAdapter.getMessageType());
