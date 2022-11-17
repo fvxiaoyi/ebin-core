@@ -1,6 +1,5 @@
 package core.framework.jpa.mongodb.configuration;
 
-import core.framework.jpa.configuration.HibernateJPAProperties;
 import core.framework.jpa.event.DomainEventTrackingAdaptor;
 import core.framework.jpa.mongodb.HibernateMongoDBDatastoreProvider;
 import core.framework.jpa.mongodb.HibernateMongoDBDialect;
@@ -35,18 +34,16 @@ import java.util.Properties;
  */
 @Configuration
 @ConditionalOnProperty(prefix = "spring.jpa.mongodb", name = "host")
-@EnableConfigurationProperties({HibernateJPAProperties.class, HibernateMongoDBProperties.class})
+@EnableConfigurationProperties({HibernateMongoDBProperties.class})
 public class HibernateMongoDBConfiguration {
     public static final String MONGODB_PERSISTENCE_UNIT_INFO_NAME = "mongodb";
     public static final String MONGODB_PERSISTENCE_UNIT_INFO_BEAN_NAME = "mongodbPersistenceUnitInfo";
     public static final String MONGODB_ENTITY_MANAGER_FACTORY_BEAN_NAME = "mongodbEntityManagerFactory";
     public static final String MONGODB_TRANSACTION_MANAGER_BEAN_NAME = "mongodbTransactionManager";
     private final HibernateMongoDBProperties jpaMongodbProperties;
-    private final HibernateJPAProperties hibernateJPAProperties;
 
-    public HibernateMongoDBConfiguration(HibernateJPAProperties hibernateJPAProperties, HibernateMongoDBProperties jpaMongodbProperties) {
+    public HibernateMongoDBConfiguration(HibernateMongoDBProperties jpaMongodbProperties) {
         this.jpaMongodbProperties = jpaMongodbProperties;
-        this.hibernateJPAProperties = hibernateJPAProperties;
     }
 
     @Bean(name = MONGODB_PERSISTENCE_UNIT_INFO_BEAN_NAME)
@@ -69,7 +66,6 @@ public class HibernateMongoDBConfiguration {
         properties.putIfAbsent(AvailableSettings.JPA_VALIDATION_MODE, ValidationMode.AUTO);
 
         ConfigurablePersistenceUnitInfo configurablePersistenceUnitInfo = new ConfigurablePersistenceUnitInfo(MONGODB_PERSISTENCE_UNIT_INFO_NAME);
-        configurablePersistenceUnitInfo.setBasePackagePath(hibernateJPAProperties.getBasePackagePath());
         configurablePersistenceUnitInfo.setPackagesToScan(jpaMongodbProperties.getPackagesToScan());
         configurablePersistenceUnitInfo.setPersistenceProviderClassName(HibernateOGMPersistenceProvider.class.getName());
         configurablePersistenceUnitInfo.addManagedClassName(MongoDBDomainEventTracking.class.getName());

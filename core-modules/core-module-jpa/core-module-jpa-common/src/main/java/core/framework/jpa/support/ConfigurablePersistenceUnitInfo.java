@@ -33,7 +33,6 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -57,7 +56,6 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
     private CandidateComponentsIndex componentsIndex;
     private LoadTimeWeaver loadTimeWeaver;
     private ClassLoader classLoader = resourcePatternResolver.getClassLoader();
-    private String basePackagePath;
 
     public ConfigurablePersistenceUnitInfo(String persistenceUnitName) {
         this.setPersistenceUnitName(persistenceUnitName);
@@ -101,10 +99,6 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
         this.classLoader = loadTimeWeaver.getInstrumentableClassLoader();
     }
 
-    public void setBasePackagePath(String basePackagePath) {
-        this.basePackagePath = Objects.requireNonNull(basePackagePath).replace(".", "/");
-    }
-
     public void setPackagesToScan(List<String> packagesToScan) {
         if (packagesToScan != null) {
             for (String pkg : packagesToScan) {
@@ -121,6 +115,7 @@ public class ConfigurablePersistenceUnitInfo extends MutablePersistenceUnitInfo 
             Resource[] resources = this.resourcePatternResolver.getResources(pattern);
             for (Resource resource : resources) {
                 String url = resource.getURL().toString();
+                String basePackagePath = pkg.replace(".", "/").replace("*", "");
                 url = url.substring(url.indexOf(basePackagePath));
                 this.addMappingFileName(url);
             }
