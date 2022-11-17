@@ -4,6 +4,7 @@ import apps.example.domain.Example;
 import apps.example.domain.service.CreateExampleService;
 import apps.example.interfaces.controller.request.CreateExampleRequest;
 import apps.example.interfaces.controller.response.CreateExampleResponse;
+import com.framework.jpa.mysql.Mysql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ public class CreateExampleAppService {
     @Autowired
     private CreateExampleService createExampleService;
 
-    @Transactional
+    @Transactional(Mysql.TRANSACTION_MANAGER_NAME)
     public CreateExampleResponse create(CreateExampleRequest request) {
         Example example = createExampleService.create(request.name);
         CreateExampleResponse response = new CreateExampleResponse();

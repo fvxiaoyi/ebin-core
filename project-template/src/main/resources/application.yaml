@@ -21,9 +21,8 @@ spring:
       packagesToScan:
         - apps.user.*
   kafka:
-    consumer:
-      bootstrapServers:
-        - 192.168.136.128:30004
+    bootstrapServers:
+      - 192.168.136.128:30004
     dispatcher:
       enable: true
       topics:

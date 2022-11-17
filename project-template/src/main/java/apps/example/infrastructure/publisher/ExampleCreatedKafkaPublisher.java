@@ -1,7 +1,9 @@
 package apps.example.infrastructure.publisher;
 
 import apps.example.application.publisher.ExampleCreatedPublisher;
-import apps.example.domain.event.ExampleCreatedEvent;
+import apps.example.interfaces.message.ExampleCreatedMessage;
+import core.framework.kafka.publisher.MessagePublisher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,9 +11,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExampleCreatedKafkaPublisher implements ExampleCreatedPublisher {
+    @Autowired
+    private MessagePublisher messagePublisher;
+
     @Override
-    public void publish(ExampleCreatedEvent event) {
-        //event to kafka event
-        //publish to kafka topic
+    public void publish(ExampleCreatedMessage event) {
+        messagePublisher.publish("example", null, event);
     }
 }

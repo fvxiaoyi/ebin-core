@@ -1,10 +1,10 @@
 package apps.example.application.publisher;
 
-import apps.example.domain.event.ExampleCreatedEvent;
+import apps.example.interfaces.message.ExampleCreatedMessage;
 
 /**
  * @author ebin
  */
 public interface ExampleCreatedPublisher {
-    void publish(ExampleCreatedEvent event);
+    void publish(ExampleCreatedMessage event);
 }

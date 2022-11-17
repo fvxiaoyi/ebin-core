@@ -1,13 +1,18 @@
 package core.framework.kafka.configuration;
 
+import core.framework.kafka.publisher.MessagePublisher;
 import core.framework.kafka.utils.Network;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.CooperativeStickyAssignor;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.record.CompressionType;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
+import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +31,8 @@ import java.util.Map;
  */
 @Configuration
 public class KafkaConfiguration {
+    public static final int MAX_REQUEST_SIZE = 1024 * 1024;   // default 1M, refer to org.apache.kafka.clients.producer.ProducerConfig.MAX_REQUEST_SIZE_CONFIG
+
     public static final int MAX_POLL_RECORDS = 500;            // default kafka setting, refer to org.apache.kafka.clients.consumer.ConsumerConfig.MAX_POLL_RECORDS_CONFIG
     public static final int MAX_POLL_BYTES = 3 * 1024 * 1024;  // get 3M bytes if possible for batching, this is not absolute limit of max bytes to poll, refer to org.apache.kafka.clients.consumer.ConsumerConfig.FETCH_MAX_BYTES_DOC
     public static final int MIN_POLL_BYTES = 1;                // default kafka setting
@@ -74,5 +81,36 @@ public class KafkaConfiguration {
                 .getIfAvailable(() -> new DefaultKafkaConsumerFactory<>(this.properties.buildConsumerProperties())));
         factory.getContainerProperties().setSyncCommits(false);
         return factory;
+    }
+
+    @Bean
+    public DefaultKafkaProducerFactoryCustomizer defaultKafkaProducerFactoryCustomizer() {
+        return producerFactory -> {
+            Map<String, Object> config = new HashMap<>();
+            config.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, CompressionType.SNAPPY.name); // if you uses JSON messages, you should use entropy-less encoders like Snappy and Lz4
+
+            config.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);                             // default 16kb
+            config.put(ProducerConfig.LINGER_MS_CONFIG, 5L);
+            config.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, MAX_REQUEST_SIZE);
+
+            config.put(ProducerConfig.ACKS_CONFIG, "all");
+            config.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+
+            config.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, 60_000);                   // 60s, Users should generally prefer to leave retries config unset and instead use delivery.timeout.ms to control retry behavior.
+//            config.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 1);           // default 5, A retry will be performed within delivery.timeout.ms. This causes messages to be out of order. If there is a strict order, please set it to 1.
+
+            config.put(ProducerConfig.RECONNECT_BACKOFF_MS_CONFIG, 500L);                    // longer backoff to reduce cpu usage when kafka is not available
+            config.put(ProducerConfig.RECONNECT_BACKOFF_MAX_MS_CONFIG, 5_000L);              // 5s
+            config.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, 30_000L);                         // 30s, metadata update timeout, shorter than default, to get exception sooner if kafka is not available
+
+            config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
+            config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
+            producerFactory.updateConfigs(config);
+        };
+    }
+
+    @Bean
+    public MessagePublisher messagePublisher() {
+        return new MessagePublisher();
     }
 }

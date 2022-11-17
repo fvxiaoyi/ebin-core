@@ -18,7 +18,7 @@ public class User extends AbstractAggregateRoot<User> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Type(type = "objectid")
-    public String id;
+    private String id;
 
     private String name;
 

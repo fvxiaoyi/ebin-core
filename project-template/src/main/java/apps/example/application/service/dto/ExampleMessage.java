@@ -7,15 +7,7 @@ import javax.validation.constraints.NotNull;
  */
 public class ExampleMessage {
     @NotNull
-    public String id;
+    public Long id;
     @NotNull
     public String name;
-
-    @Override
-    public String toString() {
-        return "ExampleMessage{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
