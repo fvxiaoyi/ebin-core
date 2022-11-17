@@ -1,6 +1,6 @@
 # ebin-core
 
-Package on the open source technology stacks，Can quickly start the development of DDD mode.
+Package on the open source technology stacks. Can quickly start the development of DDD mode.
 
 ### Main technology stack:
 ~~~
