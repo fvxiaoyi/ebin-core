@@ -30,12 +30,11 @@ import java.util.Properties;
  */
 public class DomainEntitySqlGenerator {
     public static void main(String... strings) {
-        String pkg = DemoApplicationTests.class.getPackage().getName();
         List<Class<?>> managerClasses = List.of(MysqlDomainEventTracking.class);
-        stdoutUpdateSchema(pkg, managerClasses);
+        stdoutUpdateSchema(managerClasses);
     }
 
-    public static void stdoutUpdateSchema(String pkg, List<Class<?>> managerClasses) {
+    public static void stdoutUpdateSchema(List<Class<?>> managerClasses) {
         EntityManagerFactoryBuilderImpl builder = genEntityManagerFactoryBuilder(managerClasses);
         builder.build();
         new SchemaUpdate().setFormat(true).execute(EnumSet.of(TargetType.STDOUT), builder.getMetadata());
