@@ -11,8 +11,6 @@ spring:
     username: demo
     password: demo123
   jpa:
-    common:
-      basePackagePath: apps.example
     mysql:
       packagesToScan:
         - apps.example.*

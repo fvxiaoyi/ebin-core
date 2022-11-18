@@ -13,11 +13,6 @@ spring:
     mysql:
       packagesToScan:
         - apps.example.*
-    mongodb:
-      host: 192.168.136.128:30002
-      database: demo
-      packagesToScan:
-        - apps.user.*
   kafka:
     bootstrapServers:
       - 192.168.136.128:30004
