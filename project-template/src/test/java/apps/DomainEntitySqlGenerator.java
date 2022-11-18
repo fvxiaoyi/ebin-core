@@ -44,7 +44,6 @@ public class DomainEntitySqlGenerator {
         application.setBannerMode(Banner.Mode.OFF);
         ApplicationContext applicationContext = application.run();
         DataSource dataSource = applicationContext.getBean(DataSource.class);
-
         Properties props = new Properties();
         props.put(Environment.DIALECT, MySQL57Dialect.class);
         props.put(Environment.DATASOURCE, dataSource);
