@@ -11,4 +11,10 @@
         </query>
     </named-query>
 
+    <named-native-query name="ExampleFinder.selectById" result-class="apps.example.domain.Example">
+        <query>
+            select * from example where id = ?0
+        </query>
+    </named-native-query>
+
 </entity-mappings>

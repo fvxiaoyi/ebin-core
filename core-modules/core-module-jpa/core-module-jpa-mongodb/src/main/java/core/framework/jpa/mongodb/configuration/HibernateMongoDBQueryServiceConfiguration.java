@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,6 +23,7 @@ import static core.framework.jpa.mongodb.configuration.HibernateMongoDBConfigura
  * @author ebin
  */
 @Configuration
+@ConditionalOnProperty(prefix = "spring.jpa.mongodb", name = "host")
 @AutoConfigureAfter(QueryServiceConfiguration.class)
 @ConditionalOnBean(QueryParser.class)
 public class HibernateMongoDBQueryServiceConfiguration {
